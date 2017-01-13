@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setReadPermissions(Arrays.asList(
                 "public_profile", "email", "user_birthday", "user_friends"));// get info
 
-        loginButton.registerCallback(callbackManager, callback);
+        loginButton.registerCallback(callbackManager, callback); //
 
     }
 
