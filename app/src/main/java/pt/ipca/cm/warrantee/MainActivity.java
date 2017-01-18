@@ -3,6 +3,7 @@ package pt.ipca.cm.warrantee;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,14 +13,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
+import io.realm.exceptions.RealmMigrationNeededException;
+import pt.ipca.cm.warrantee.Model.Utilizador;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    RealmResults<Utilizador> utilizadores;
+    Realm realm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        realm = getRealmInstance();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -40,6 +50,17 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        utilizadores = realm.where(Utilizador.class).findAll();
+
+        View hView =  navigationView.getHeaderView(0);
+        TextView textViewNomeDrawer = (TextView) hView.findViewById(R.id.textViewNomeDrawer);
+        TextView textViewEmailDrawer = (TextView) hView.findViewById(R.id.textViewEmailDrawer);
+        textViewNomeDrawer.setText(utilizadores.get(0).getNome());
+        textViewEmailDrawer.setText(utilizadores.get(0).getEmail());
+        //Comecar com a lista de festivais
+        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+        tx.replace(R.id.frame, new FragmentGarantias());
+        tx.commit();
     }
 
     @Override
@@ -80,22 +101,43 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_garantias) {
+            FragmentGarantias fragmentSobre = new FragmentGarantias();
+            android.support.v4.app.FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction1.replace(R.id.frame, fragmentSobre);
+            fragmentTransaction1.commit();
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_categorias) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_perfil) {
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_settings) {
+            FragmentSettings fragmentSobre = new FragmentSettings();
+            android.support.v4.app.FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction1.replace(R.id.frame, fragmentSobre);
+            fragmentTransaction1.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    Realm getRealmInstance(){
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
+        try {
+            return Realm.getInstance(realmConfiguration);
+        } catch (RealmMigrationNeededException e){
+            try {
+                Realm.deleteRealm(realmConfiguration);
+                //Realm file has been deleted.
+                return Realm.getInstance(realmConfiguration);
+            } catch (Exception ex){
+                throw ex;
+                //No Realm file to remove.
+            }
+        }
+    }
+
+
 }
