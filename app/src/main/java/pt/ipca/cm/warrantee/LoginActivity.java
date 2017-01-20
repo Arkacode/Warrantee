@@ -1,6 +1,7 @@
 package pt.ipca.cm.warrantee;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,15 @@ import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,25 +45,48 @@ import pt.ipca.cm.warrantee.Model.Utilizador;
 public class LoginActivity extends AppCompatActivity {
     LoginButton loginButton;
     CallbackManager callbackManager;
-    Realm realm;
+    DatabaseReference databaseReference;
+    FirebaseUser user;
+    Utilizador utilizador;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference utilizadorRef;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
-        Realm.init(this);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        utilizadorRef = firebaseDatabase.getReference("utilizadores");
+        mAuth = FirebaseAuth.getInstance();
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.GreenSec));
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d("da", "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d("da", "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
         callbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList(
-                "public_profile", "email", "user_birthday", "user_friends"));// get info
+                "public_profile", "email", "user_birthday", "user_friends","user_about_me"));// get info
 
         loginButton.registerCallback(callbackManager, callback);
         if(isLoggedIn()) {
-            openMainActivity();
+            callMainActivity();
         }
 
 
@@ -63,27 +96,41 @@ public class LoginActivity extends AppCompatActivity {
         return accessToken != null;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
-        public void onSuccess(LoginResult loginResult) {
+        public void onSuccess(final LoginResult loginResult) {
             // App code
-            realm = getRealmInstance();
+            handleFacebookAccessToken(loginResult.getAccessToken());
             GraphRequest request = GraphRequest.newMeRequest(
                     loginResult.getAccessToken(),
                     new GraphRequest.GraphJSONObjectCallback() {
                         @Override
                         public void onCompleted(JSONObject object, GraphResponse response) {
                             Log.v("LoginActivity", response.toString());
-
                             // Application code
                             try {
                                 String email = object.getString("name");
                                 String birthday = object.getString("birthday");// 01/31/1980 format
                                 Toast.makeText(getApplicationContext(),"Email : " + email,Toast.LENGTH_LONG).show();
-                                Utilizador utilizador=new Utilizador();
+                                utilizador=new Utilizador();
+                                utilizador.setId(Profile.getCurrentProfile().getId());
                                 utilizador.setNome(object.getString("name"));
                                 utilizador.setEmail(object.getString("email"));
-                                Utilizador.add(utilizador,realm);
-                                openMainActivity();
+                                utilizadorRef.child(utilizador.getId()).setValue(utilizador);
+                                callMainActivity();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -95,7 +142,28 @@ public class LoginActivity extends AppCompatActivity {
             request.executeAsync();
 
         }
+        public static final String TAG = "dwa" ;
+        private void handleFacebookAccessToken(AccessToken token) {
+            Log.d(TAG, "handleFacebookAccessToken:" + token);
 
+            AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+            mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "signInWithCredential", task.getException());
+                                Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
 
 
         @Override
@@ -111,8 +179,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
-    private void openMainActivity() {
+    private void callMainActivity() {
         Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+        //intent.putExtra("id",utilizador.getId());
         startActivity(intent);
     }
     @Override
@@ -121,19 +190,4 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    Realm getRealmInstance(){
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
-        try {
-            return Realm.getInstance(realmConfiguration);
-        } catch (RealmMigrationNeededException e){
-            try {
-                Realm.deleteRealm(realmConfiguration);
-                //Realm file has been deleted.
-                return Realm.getInstance(realmConfiguration);
-            } catch (Exception ex){
-                throw ex;
-                //No Realm file to remove.
-            }
-        }
-    }
 }

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "406589838857",
+    "firebase_url": "https://warrantee-7a84c.firebaseio.com",
+    "project_id": "warrantee-7a84c",
+    "storage_bucket": "warrantee-7a84c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406589838857:android:15460135147afee9",
+        "android_client_info": {
+          "package_name": "pt.ipca.cm.warrantee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406589838857-hqtuf2rvnq3gctnna6jll9e82n27b5ju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBkxxDg0DIH2oubIu75M_Wi_xvM_iRgPI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

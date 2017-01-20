@@ -8,39 +8,16 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 
-public class Produto  extends RealmObject{
+public class Produto{
+    private int id;
     String nome;
+    private String codigoBarras;
+    private String marca;
     String serialNumber;
     String fotografia;
-    RealmList<Categoria> categoria;
-    RealmList<Garantia> garantia;
-    RealmList<Utilizador> utilizador;
 
-    public RealmList<Utilizador> getUtilizador() {
-        return utilizador;
-    }
 
-    public void setUtilizador(RealmList<Utilizador> utilizador) {
-        this.utilizador = utilizador;
-    }
 
-    public RealmList<Garantia> getGarantia() {
-
-        return garantia;
-    }
-
-    public void setGarantia(RealmList<Garantia> garantia) {
-        this.garantia = garantia;
-    }
-
-    public RealmList<Categoria> getCategoria() {
-
-        return categoria;
-    }
-
-    public void setCategoria(RealmList<Categoria> categoria) {
-        this.categoria = categoria;
-    }
 
     public String getFotografia() {
 
@@ -67,5 +44,29 @@ public class Produto  extends RealmObject{
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    public void setCodigoBarras(String codigoBarras) {
+        this.codigoBarras = codigoBarras;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
 }

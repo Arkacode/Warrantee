@@ -1,9 +1,11 @@
 package pt.ipca.cm.warrantee;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,8 +15,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
@@ -23,24 +37,18 @@ import pt.ipca.cm.warrantee.Model.Utilizador;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    RealmResults<Utilizador> utilizadores;
-    Realm realm;
+    Intent intent = getIntent();
+    String uid = Profile.getCurrentProfile().getId();
+    Utilizador utilizador;
+    DatabaseReference utilizadoresRef = FirebaseDatabase.getInstance().getReference("utilizadores");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        realm = getRealmInstance();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -50,17 +58,37 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        utilizadores = realm.where(Utilizador.class).findAll();
-
+        utilizador = new Utilizador();
         View hView =  navigationView.getHeaderView(0);
-        TextView textViewNomeDrawer = (TextView) hView.findViewById(R.id.textViewNomeDrawer);
-        TextView textViewEmailDrawer = (TextView) hView.findViewById(R.id.textViewEmailDrawer);
-        textViewNomeDrawer.setText(utilizadores.get(0).getNome());
-        textViewEmailDrawer.setText(utilizadores.get(0).getEmail());
-        //Comecar com a lista de festivais
+        final TextView textViewNomeDrawer = (TextView) hView.findViewById(R.id.textViewNomeDrawer);
+        final TextView textViewEmailDrawer = (TextView) hView.findViewById(R.id.textViewEmailDrawer);
+        final CircleImageView imagePerfil = (CircleImageView) hView.findViewById(R.id.imageViewDrawer);
+       /* textViewNomeDrawer.setText();
+        textViewEmailDrawer.setText();*/
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(R.id.frame, new FragmentGarantias());
         tx.commit();
+
+
+
+        utilizadoresRef.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Utilizador utilizador = dataSnapshot.getValue(Utilizador.class);
+                textViewEmailDrawer.setText(utilizador.getEmail());
+                textViewNomeDrawer.setText(utilizador.getNome());
+
+                Picasso.with(getApplicationContext())
+                        .load("https://graph.facebook.com/" + utilizador.getId()+ "/picture?type=large")
+                        .into(imagePerfil);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override
@@ -116,6 +144,10 @@ public class MainActivity extends AppCompatActivity
             android.support.v4.app.FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
             fragmentTransaction1.replace(R.id.frame, fragmentSobre);
             fragmentTransaction1.commit();
+        } else if (id == R.id.nav_logout){
+            LoginManager.getInstance().logOut();
+            FirebaseAuth.getInstance().signOut();
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -123,21 +155,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    Realm getRealmInstance(){
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
-        try {
-            return Realm.getInstance(realmConfiguration);
-        } catch (RealmMigrationNeededException e){
-            try {
-                Realm.deleteRealm(realmConfiguration);
-                //Realm file has been deleted.
-                return Realm.getInstance(realmConfiguration);
-            } catch (Exception ex){
-                throw ex;
-                //No Realm file to remove.
-            }
-        }
-    }
 
 
 }
