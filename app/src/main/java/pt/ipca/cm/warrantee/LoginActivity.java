@@ -122,12 +122,11 @@ public class LoginActivity extends AppCompatActivity {
                             Log.v("LoginActivity", response.toString());
                             // Application code
                             try {
-                                String email = object.getString("name");
-                                String birthday = object.getString("birthday");// 01/31/1980 format
-                                Toast.makeText(getApplicationContext(),"Email : " + email,Toast.LENGTH_LONG).show();
+
                                 utilizador=new Utilizador();
                                 utilizador.setId(Profile.getCurrentProfile().getId());
                                 utilizador.setNome(object.getString("name"));
+                                Toast.makeText(getApplicationContext(),"Bem-vindo : " + utilizador.getNome(),Toast.LENGTH_LONG).show();
                                 utilizador.setEmail(object.getString("email"));
                                 utilizadorRef.child(utilizador.getId()).setValue(utilizador);
                                 callMainActivity();

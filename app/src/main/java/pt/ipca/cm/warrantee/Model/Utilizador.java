@@ -16,8 +16,7 @@ public class Utilizador {
     private String email;
     private String password;
     private String lingua;
-    private int nrTelemovel;
-    private int dataNasc;
+    private String dataNasc;
 
 
     public String getId() {
@@ -29,16 +28,6 @@ public class Utilizador {
     }
 
 
-
-
-    public int getNrTelemovel() {
-
-        return nrTelemovel;
-    }
-
-    public void setNrTelemovel(int nrTelemovel) {
-        this.nrTelemovel = nrTelemovel;
-    }
 
 
     public String getPassword() {
@@ -71,11 +60,11 @@ public class Utilizador {
 
 
 
-    public int getDataNasc() {
+    public String getDataNasc() {
         return dataNasc;
     }
 
-    public void setDataNasc(int dataNasc) {
+    public void setDataNasc(String dataNasc) {
         this.dataNasc = dataNasc;
     }
 }

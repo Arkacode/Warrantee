@@ -41,7 +41,7 @@ public class ProdutoInsertActivity extends Activity implements OnClickListener{
             String scanContent = scanningResult.getContents();
             String scanFormat = scanningResult.getFormatName();
             /*formatTxt.setText("FORMAT: " + scanFormat);*/
-            editTextScanSerial.setText("CONTENT: " + scanContent);
+            editTextScanSerial.setText(scanContent);
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(),

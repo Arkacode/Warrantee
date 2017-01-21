@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        utilizador = new Utilizador();
         View hView =  navigationView.getHeaderView(0);
         final TextView textViewNomeDrawer = (TextView) hView.findViewById(R.id.textViewNomeDrawer);
         final TextView textViewEmailDrawer = (TextView) hView.findViewById(R.id.textViewEmailDrawer);
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity
         utilizadoresRef.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Utilizador utilizador = dataSnapshot.getValue(Utilizador.class);
+                utilizador = dataSnapshot.getValue(Utilizador.class);
                 textViewEmailDrawer.setText(utilizador.getEmail());
                 textViewNomeDrawer.setText(utilizador.getNome());
 
