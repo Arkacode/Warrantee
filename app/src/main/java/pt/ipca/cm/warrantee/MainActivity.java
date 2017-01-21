@@ -44,10 +44,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (uid == null){
+            LoginManager.getInstance().logOut();
+            FirebaseAuth.getInstance().signOut();
+            finish();
+        }
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -69,24 +74,31 @@ public class MainActivity extends AppCompatActivity
         tx.commit();
 
 
+        if (uid == null) {
+            LoginManager.getInstance().logOut();
+            FirebaseAuth.getInstance().signOut();
+            finish();
+        }
+        else
+        {
+            utilizadoresRef.child(uid).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    utilizador = dataSnapshot.getValue(Utilizador.class);
+                    textViewEmailDrawer.setText(utilizador.getEmail());
+                    textViewNomeDrawer.setText(utilizador.getNome());
 
-        utilizadoresRef.child(uid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                utilizador = dataSnapshot.getValue(Utilizador.class);
-                textViewEmailDrawer.setText(utilizador.getEmail());
-                textViewNomeDrawer.setText(utilizador.getNome());
+                    Picasso.with(getApplicationContext())
+                            .load("https://graph.facebook.com/" + utilizador.getId() + "/picture?type=large")
+                            .into(imagePerfil);
+                }
 
-                Picasso.with(getApplicationContext())
-                        .load("https://graph.facebook.com/" + utilizador.getId()+ "/picture?type=large")
-                        .into(imagePerfil);
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+                }
+            });
+        }
 
     }
 

@@ -15,7 +15,6 @@ public class Utilizador {
     private String nome;
     private String email;
     private String password;
-    private String lingua;
     private String dataNasc;
 
 
@@ -28,8 +27,6 @@ public class Utilizador {
     }
 
 
-
-
     public String getPassword() {
 
         return password;
@@ -38,8 +35,6 @@ public class Utilizador {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
 
     public String getEmail() {
         return email;

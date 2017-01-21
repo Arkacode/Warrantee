@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     FirebaseUser user;
     Utilizador utilizador;
+    String uid;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference utilizadorRef;
     private FirebaseAuth mAuth;
@@ -122,11 +123,10 @@ public class LoginActivity extends AppCompatActivity {
                             Log.v("LoginActivity", response.toString());
                             // Application code
                             try {
-
                                 utilizador=new Utilizador();
                                 utilizador.setId(Profile.getCurrentProfile().getId());
                                 utilizador.setNome(object.getString("name"));
-                                Toast.makeText(getApplicationContext(),"Bem-vindo : " + utilizador.getNome(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"Bem-vindo " + utilizador.getNome(),Toast.LENGTH_LONG).show();
                                 utilizador.setEmail(object.getString("email"));
                                 utilizadorRef.child(utilizador.getId()).setValue(utilizador);
                                 callMainActivity();
@@ -135,6 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     });
+
             Bundle parameters = new Bundle();
             parameters.putString("fields", "id,name,email,gender,birthday");
             request.setParameters(parameters);
