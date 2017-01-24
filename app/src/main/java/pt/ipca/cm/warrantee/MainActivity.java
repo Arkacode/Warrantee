@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
@@ -33,28 +34,38 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import io.realm.exceptions.RealmMigrationNeededException;
+import pt.ipca.cm.warrantee.Model.Categoria;
+import pt.ipca.cm.warrantee.Model.Moeda;
 import pt.ipca.cm.warrantee.Model.Utilizador;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    Intent intent = getIntent();
+
     String uid = Profile.getCurrentProfile().getId();
+    Categoria categoria;
+    Moeda moeda;
+    Utilizador utilizadorC;
     Utilizador utilizador;
     DatabaseReference utilizadoresRef = FirebaseDatabase.getInstance().getReference("utilizadores");
+    DatabaseReference categoriasRef = FirebaseDatabase.getInstance().getReference("categorias");
+    DatabaseReference moedasRef = FirebaseDatabase.getInstance().getReference("moedas");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (uid == null){
-            LoginManager.getInstance().logOut();
-            FirebaseAuth.getInstance().signOut();
-            finish();
-        }
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if(!extras.getString("nome").equals("")  && !extras.getString("nome").equals("")) {
+            String nome = extras.getString("nome");
+            String email = extras.getString("email");
+            utilizadorC = new Utilizador();
+            utilizadorC.setId(Profile.getCurrentProfile().getId());
+            utilizadorC.setNome(nome);
+            utilizadorC.setEmail(email);
+            utilizadoresRef.child(utilizadorC.getId()).setValue(utilizadorC);
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -72,16 +83,8 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(R.id.frame, new FragmentGarantias());
         tx.commit();
-
-
-        if (uid == null) {
-            LoginManager.getInstance().logOut();
-            FirebaseAuth.getInstance().signOut();
-            finish();
-        }
-        else
-        {
-            utilizadoresRef.child(uid).addValueEventListener(new ValueEventListener() {
+        iniciarDb();
+        utilizadoresRef.child(uid).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     utilizador = dataSnapshot.getValue(Utilizador.class);
@@ -99,7 +102,19 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
-
+    public void iniciarDb(){
+        categoria = new Categoria();
+        String[] categoriaArray =  { "Computadores", "Eletrodomesticos", "Telemóveis", "Televisões"};
+        for(int i = 0; i < categoriaArray.length; i++) {
+            categoria.setDescricao(categoriaArray[i]);
+            categoriasRef.child(String.valueOf(i+1)).setValue(categoria);
+        }
+        moeda = new Moeda();
+        String[] moedaArray =  { "EUR", "USD", "GBP", "BRL"};
+        for(int i = 0; i < moedaArray.length; i++) {
+            moeda.setDescricao(moedaArray[i]);
+            moedasRef.child(String.valueOf(i+1)).setValue(moeda);
+        }
     }
 
     @Override

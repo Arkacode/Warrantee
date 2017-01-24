@@ -2,11 +2,10 @@ package pt.ipca.cm.warrantee;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Window;
+
 import pt.ipca.cm.warrantee.com.google.zxing.integration.android.IntentIntegrator;
 import pt.ipca.cm.warrantee.com.google.zxing.integration.android.IntentResult;
-import android.os.Bundle;
-import android.app.Activity;
+
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,21 +13,21 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ProdutoInsertActivity extends Activity implements OnClickListener{
+public class ProdutoInsertActivity extends AppCompatActivity implements OnClickListener{
     private Button scanBtn;
     private TextView editTextScanSerial;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produto_insert);
-        scanBtn = (Button)findViewById(R.id.buttonScan);
-        editTextScanSerial = (TextView)findViewById(R.id.editTextScan);
+        scanBtn = (Button)findViewById(R.id.buttonScanBarras);
+        editTextScanSerial = (TextView)findViewById(R.id.editTextCodigoBarras);
         scanBtn.setOnClickListener(this);
 
     }
     public void onClick(View v){
         //respond to clicks
-        if(v.getId()==R.id.buttonScan){
+        if(v.getId()==R.id.buttonScanBarras){
             IntentIntegrator scanIntegrator = new IntentIntegrator(this);
             scanIntegrator.initiateScan();
         }

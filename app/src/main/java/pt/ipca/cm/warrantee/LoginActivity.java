@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton.registerCallback(callbackManager, callback);
         if(isLoggedIn()) {
-            callMainActivity();
+            callMainActivity("","");
         }
 
 
@@ -123,13 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.v("LoginActivity", response.toString());
                             // Application code
                             try {
-                                utilizador=new Utilizador();
-                                utilizador.setId(Profile.getCurrentProfile().getId());
-                                utilizador.setNome(object.getString("name"));
-                                Toast.makeText(getApplicationContext(),"Bem-vindo " + utilizador.getNome(),Toast.LENGTH_LONG).show();
-                                utilizador.setEmail(object.getString("email"));
-                                utilizadorRef.child(utilizador.getId()).setValue(utilizador);
-                                callMainActivity();
+                                callMainActivity(object.getString("name"), object.getString("email"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -179,9 +173,15 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
+    private void callMainActivity(String nome, String email) {
+        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+        intent.putExtra("nome",nome);
+        intent.putExtra("email", email);
+        startActivity(intent);
+    }
+
     private void callMainActivity() {
         Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-        //intent.putExtra("id",utilizador.getId());
         startActivity(intent);
     }
     @Override

@@ -10,7 +10,6 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class Utilizador {
-    @PrimaryKey
     private String id;
     private String nome;
     private String email;

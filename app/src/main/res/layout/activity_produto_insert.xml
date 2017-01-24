@@ -10,26 +10,40 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="pt.ipca.cm.warrantee.ProdutoInsertActivity">
 
-    <EditText
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:ems="10"
-        android:layout_marginStart="18dp"
-        android:id="@+id/editTextScan"
-        android:layout_marginTop="51dp"
+        android:id="@+id/textHolder1"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="26dp">
 
-    <Button
-        android:id="@+id/buttonScan"
-        android:layout_height="45dp"
-        android:padding="16dp"
-        android:background="@drawable/ic_scan"
-        android:textSize="24sp"
-        android:layout_marginEnd="18dp"
-        android:layout_width="45dp"
-        android:layout_alignTop="@+id/editText"
-        android:layout_alignParentEnd="true" />
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView6" />
+
+        <Button
+            android:id="@+id/buttonScanBarras"
+            android:layout_height="45dp"
+            android:drawableLeft="@drawable/ic_scan"
+            android:textSize="10sp"
+            android:text="Scan"
+            android:layout_width="wrap_content"
+            android:background="@color/GreenMain"
+            android:textColor="@color/cardview_light_background"
+
+            android:layout_marginStart="224dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:id="@+id/editTextCodigoBarras"
+            android:hint="Introduza ou digitalize"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+
 </RelativeLayout>
