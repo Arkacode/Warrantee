@@ -162,6 +162,10 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction1.commit();
             // Handle the camera action
         } else if (id == R.id.nav_categorias) {
+            FragmentCategorias fragmentCategoria = new FragmentCategorias();
+            android.support.v4.app.FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction1.replace(R.id.frame, fragmentCategoria);
+            fragmentTransaction1.commit();
 
         } else if (id == R.id.nav_perfil) {
 

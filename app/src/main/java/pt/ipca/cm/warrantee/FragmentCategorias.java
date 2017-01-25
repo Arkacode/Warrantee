@@ -2,10 +2,7 @@ package pt.ipca.cm.warrantee;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -18,20 +15,27 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.ipca.cm.warrantee.Model.Garantia;
+import pt.ipca.cm.warrantee.Model.Categoria;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentGarantias extends Fragment {
-    List<Garantia> garantias=new ArrayList<>();
+public class FragmentCategorias extends Fragment {
+    DatabaseReference categoriasRef = FirebaseDatabase.getInstance().getReference("categorias");
+    ListView listViewCategorias;
+    List<Categoria> categoria=new ArrayList<>();
     ListViewAdapter adapter;
-    ListView listViewGarantias;
-    public FragmentGarantias() {
+
+    public FragmentCategorias() {
         // Required empty public constructor
     }
 
@@ -39,24 +43,17 @@ public class FragmentGarantias extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_garantias, container, false);
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fabGarantias);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "O Rodolfo é lindo", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                Intent intent = new Intent(getActivity(),ProdutoInsertActivity.class);
-                startActivity(intent);
-            }
-        });
+        View rootView = inflater.inflate(R.layout.fragment_categorias, container, false);
 
-        listViewGarantias=(ListView)rootView.findViewById(R.id.listViewGarantias);
+
+        listViewCategorias=(ListView)rootView.findViewById(R.id.listViewCategorias);
         adapter=new ListViewAdapter();
-        listViewGarantias.setAdapter(adapter);
+        listViewCategorias.setAdapter(adapter);
         return rootView;
     }
+
+
+
 
 
 
@@ -71,12 +68,12 @@ public class FragmentGarantias extends Fragment {
 
         @Override
         public int getCount() {
-            return garantias.size();
+            return categoria.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return garantias.get(position);
+            return categoria.get(position);
         }
 
         @Override
@@ -87,23 +84,19 @@ public class FragmentGarantias extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-           if (convertView == null)
-                convertView = mInflater.inflate(R.layout.row_garantias, null);
+            if (convertView == null)
+                convertView = mInflater.inflate(R.layout.row_categoria, null);
+            TextView textViewcategoria = (TextView)convertView.findViewById(R.id.textViewCategoria);
+            textViewcategoria.setText(categoria.get(position).getDescricao());
 
-            TextView textViewTitle=(TextView)convertView.findViewById(R.id.textViewTitulo);
-            ImageView imgViewPhoto = (ImageView) convertView.findViewById(R.id.imageViewFoto);
-            TextView textViewMarca =(TextView)convertView.findViewById(R.id.textViewMarca);
-            TextView textViewDays =(TextView)convertView.findViewById(R.id.textViewDias);
 
-            convertView.setTag(new Integer(position));
-            convertView.setClickable(true);
-            convertView.setOnClickListener(this);
+
             return convertView;
         }
 
         @Override
         public void onClick(View v) {
-           /*Integer position=(Integer) v.getTag();
+           /* Integer position=(Integer) v.getTag();
             Log.d("NewsFeed","Desc:"+noticias.get(position).getDescription());
             Log.d("NewsFeed","Clicked:"+noticias.get(position).getCity());
             Log.d("NewsFeed","Clicked:"+noticias.get(position).getDatePub());
@@ -126,9 +119,8 @@ public class FragmentGarantias extends Fragment {
                     replace(R.id.content_frame,infoArticleFragment).
                     setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE).
                     addToBackStack(null).
-                    commit();
+                    commit();*/
 
-        }*/
-     }
+        }
     }
 }
