@@ -4,6 +4,7 @@ package pt.ipca.cm.warrantee;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,13 +33,14 @@ public class FragmentGarantias extends Fragment {
     List<Garantia> garantias=new ArrayList<>();
     ListViewAdapter adapter;
     ListView listViewGarantias;
+    MainActivity mainActivity = (MainActivity) getActivity();
     public FragmentGarantias() {
         // Required empty public constructor
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_garantias, container, false);

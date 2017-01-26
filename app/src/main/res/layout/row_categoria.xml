@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1">
+    android:layout_height="match_parent">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center_horizontal"
         android:layout_height="40dp"
         android:layout_weight="0.01">
 
@@ -15,6 +16,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:text="Categoria"
                 android:layout_width="wrap_content"
@@ -22,9 +24,12 @@
                 android:id="@+id/textViewCategoria"
                 android:textColor="@color/GreenMain"
                 android:layout_marginLeft="25dp"
-                android:layout_alignParentBottom="true" />
-
+                android:gravity="center_horizontal"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="25dp" />
         </RelativeLayout>
 
+
     </android.support.v7.widget.CardView>
-</LinearLayout>
+</RelativeLayout>

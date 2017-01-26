@@ -32,14 +32,13 @@ import pt.ipca.cm.warrantee.Model.Categoria;
  * A simple {@link Fragment} subclass.
  */
 public class FragmentCategorias extends Fragment {
-    DatabaseReference categoriasRef = FirebaseDatabase.getInstance().getReference("categorias");
     ListView listViewCategorias;
-    List<Categoria> categoria=new ArrayList<>();
     ListViewAdapter adapter;
-
+    MainActivity mainActivity = (MainActivity) getActivity();
     public FragmentCategorias() {
         // Required empty public constructor
     }
+
 
 
     @Override
@@ -69,12 +68,12 @@ public class FragmentCategorias extends Fragment {
 
         @Override
         public int getCount() {
-            return categoria.size();
+            return mainActivity.categorias.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return categoria.get(position);
+            return mainActivity.categorias.get(position);
         }
 
         @Override
@@ -88,9 +87,7 @@ public class FragmentCategorias extends Fragment {
             if (convertView == null)
                 convertView = mInflater.inflate(R.layout.row_categoria, null);
             TextView textViewcategoria = (TextView)convertView.findViewById(R.id.textViewCategoria);
-            textViewcategoria.setText(categoria.get(position).getDescricao());
-
-
+            textViewcategoria.setText(mainActivity.categorias.get(position).getDescricao());
 
             return convertView;
         }

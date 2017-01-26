@@ -29,6 +29,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -40,7 +43,7 @@ import pt.ipca.cm.warrantee.Model.Utilizador;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    public static List<Categoria> categorias = new ArrayList<>();
     String uid = Profile.getCurrentProfile().getId();
     Categoria categoria;
     Moeda moeda;
@@ -84,6 +87,30 @@ public class MainActivity extends AppCompatActivity
         tx.replace(R.id.frame, new FragmentGarantias());
         tx.commit();
         iniciarDb();
+
+
+        categoriasRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot categoria : dataSnapshot.getChildren()){
+                    int isDifferent = 0;
+                    for (int i = 0; i < categorias.size(); i++){
+                        if (categorias.get(i) != categoria.getValue(Categoria.class)){
+                            isDifferent++;
+                        }
+                    }
+                    if (isDifferent == categorias.size()){
+                        categorias.add(categoria.getValue(Categoria.class));
+                    }
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         utilizadoresRef.child(uid).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -102,9 +129,10 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
+
     public void iniciarDb(){
         categoria = new Categoria();
-        String[] categoriaArray =  { "Computadores", "Eletrodomesticos", "Telemóveis", "Televisões"};
+        String[] categoriaArray =  { "Computadores", "Eletrodomesticos", "Telemóveis", "Televisões", "Rodolfo"};
         for(int i = 0; i < categoriaArray.length; i++) {
             categoria.setDescricao(categoriaArray[i]);
             categoriasRef.child(String.valueOf(i+1)).setValue(categoria);

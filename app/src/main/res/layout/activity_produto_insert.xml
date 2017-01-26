@@ -131,6 +131,7 @@
 
         <Button
             android:id="@+id/buttonScanSerie"
+            android:onClick="onClick"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:drawableLeft="@drawable/ic_scan"
@@ -148,10 +149,15 @@
         android:text="Categoria"
         android:textColor="@color/GreenMain"
         android:textSize="24sp"/>
+
     <Spinner
-        android:id="@+id/planets_spinnerCategoria"
+        android:id="@+id/spinnerCategoria"
+        android:spinnerMode="dropdown"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:backgroundTint="@color/colorPrimary"
+        android:textColorHint="#05ab9a"
+        android:layout_height="70dp" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
