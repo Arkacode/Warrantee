@@ -14,17 +14,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cod. barras"
+        android:textColor="@color/GreenMain"
         android:textSize="24sp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textHolder1"
-        android:layout_marginTop="28dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:weightSum="10"
         android:orientation="horizontal">
-
 
         <EditText
             android:layout_width="0dp"
@@ -33,7 +32,7 @@
             android:id="@+id/editTextCodigoBarras"
             android:hint="Introduza ou digitalize"
             android:layout_alignParentStart="true"
-            android:layout_weight="8"/>
+            android:layout_weight="7.5"/>
 
         <Button
             android:id="@+id/buttonScanBarras"
@@ -42,7 +41,7 @@
             android:drawableLeft="@drawable/ic_scan"
             android:textSize="10sp"
             android:text="Scan"
-            android:layout_weight="2"
+            android:layout_weight="2.5"
             android:background="@color/GreenMain"
             android:textColor="@color/cardview_light_background" />
     </LinearLayout>
@@ -51,12 +50,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Marca do produto"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/GreenMain"
         android:textSize="24sp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textHolder2"
-        android:layout_marginTop="28dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:weightSum="10"
@@ -71,9 +71,100 @@
             android:id="@+id/editTextMarca"
             android:hint="Introduza a marca"
             android:layout_alignParentStart="true"
-            android:layout_weight="8"/>
+            android:layout_weight="10"/>
 
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nome Produto"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/GreenMain"
+        android:textSize="24sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textHolderNomeProduto"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="10"
+        android:orientation="horizontal"
+        android:layout_below="@id/textHolder1">
+
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:inputType="textPersonName"
+            android:id="@+id/editTextNomeProduto"
+            android:hint="Introduza o nome do produto"
+            android:layout_alignParentStart="true"
+            android:layout_weight="10"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cod. Serie"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/GreenMain"
+        android:textSize="24sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textHolderNumSerie"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="10"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:inputType="textPersonName"
+            android:id="@+id/editTextNumSerie"
+            android:hint="Introduza ou digitalize"
+            android:layout_alignParentStart="true"
+            android:layout_weight="7.5"/>
+
+        <Button
+            android:id="@+id/buttonScanSerie"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/ic_scan"
+            android:textSize="10sp"
+            android:text="Scan"
+            android:layout_weight="2.5"
+            android:background="@color/GreenMain"
+            android:textColor="@color/cardview_light_background" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Categoria"
+        android:textColor="@color/GreenMain"
+        android:textSize="24sp"/>
+    <Spinner
+        android:id="@+id/planets_spinnerCategoria"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            android:id="@+id/buttonConfirmarProduto"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Confirmar"
+            android:background="@color/GreenMain"
+            android:textColor="@color/cardview_light_background"
+            android:layout_alignParentBottom="true"
+            />
+    </RelativeLayout>
 
 
 </LinearLayout>

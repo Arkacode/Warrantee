@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 public class ProdutoInsertActivity extends AppCompatActivity implements OnClickListener{
     private Button scanBtn;
+    private Button produtoDetalhes;
     private TextView editTextScanSerial;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +25,15 @@ public class ProdutoInsertActivity extends AppCompatActivity implements OnClickL
         editTextScanSerial = (TextView)findViewById(R.id.editTextCodigoBarras);
         scanBtn.setOnClickListener(this);
 
+        produtoDetalhes = (Button)findViewById(R.id.buttonConfirmarProduto);
+        produtoDetalhes.setOnClickListener(this);
+
     }
     public void onClick(View v){
+        if(v.getId()==R.id.buttonConfirmarProduto) {
+            Intent myIntent = new Intent(ProdutoInsertActivity.this, ProdutoDetalhesActivity.class);
+            ProdutoInsertActivity.this.startActivity(myIntent);
+        }
         //respond to clicks
         if(v.getId()==R.id.buttonScanBarras){
             IntentIntegrator scanIntegrator = new IntentIntegrator(this);
