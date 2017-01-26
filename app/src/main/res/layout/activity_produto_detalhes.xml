@@ -125,7 +125,7 @@
         android:orientation="horizontal">
 
         <Spinner
-            android:id="@+id/planets_spinner"
+            android:id="@+id/spinnerMoeda"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="5"/>
