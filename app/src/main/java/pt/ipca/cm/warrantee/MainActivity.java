@@ -38,12 +38,16 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import io.realm.exceptions.RealmMigrationNeededException;
 import pt.ipca.cm.warrantee.Model.Categoria;
+import pt.ipca.cm.warrantee.Model.Garantia;
 import pt.ipca.cm.warrantee.Model.Moeda;
+import pt.ipca.cm.warrantee.Model.Produto;
+import pt.ipca.cm.warrantee.Model.ProdutosGarantias;
 import pt.ipca.cm.warrantee.Model.Utilizador;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static List<Categoria> categorias = new ArrayList<>();
+    public static List<ProdutosGarantias> produtosGarantias = new ArrayList<>();
     String uid = Profile.getCurrentProfile().getId();
     Categoria categoria;
     Moeda moeda;
@@ -51,6 +55,8 @@ public class MainActivity extends AppCompatActivity
     Utilizador utilizador;
     DatabaseReference utilizadoresRef = FirebaseDatabase.getInstance().getReference("utilizadores");
     DatabaseReference categoriasRef = FirebaseDatabase.getInstance().getReference("categorias");
+    DatabaseReference produtosRef = FirebaseDatabase.getInstance().getReference("produtos");
+    DatabaseReference garantiasRef = FirebaseDatabase.getInstance().getReference("garantias");
     DatabaseReference moedasRef = FirebaseDatabase.getInstance().getReference("moedas");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,11 +141,12 @@ public class MainActivity extends AppCompatActivity
         String[] categoriaArray =  { "Computadores", "Eletrodomesticos", "Telemóveis", "Televisões", "Rodolfo"};
         for(int i = 0; i < categoriaArray.length; i++) {
             categoria.setDescricao(categoriaArray[i]);
-            categoriasRef.child(String.valueOf(i+1)).setValue(categoria);
+            categoriasRef.child(String.valueOf(i + 1)).setValue(categoria);
         }
         moeda = new Moeda();
-        String[] moedaArray =  { "EUR", "USD", "GBP", "BRL"};
-        for(int i = 0; i < moedaArray.length; i++) {
+        String[] moedaArray =  { "USD", "EUR","GBP", "BRL"};
+        int size =moedaArray.length;
+        for(int i = 0; i < size; i++) {
             moeda.setDescricao(moedaArray[i]);
             moedasRef.child(String.valueOf(i+1)).setValue(moeda);
         }

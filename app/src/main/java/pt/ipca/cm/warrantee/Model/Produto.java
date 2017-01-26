@@ -9,24 +9,12 @@ import io.realm.RealmObject;
 import io.realm.RealmResults;
 
 public class Produto{
-    private int id;
     String nome;
     private String codigoBarras;
     private String marca;
     String serialNumber;
-    String fotografia;
 
 
-
-
-    public String getFotografia() {
-
-        return fotografia;
-    }
-
-    public void setFotografia(String fotografia) {
-        this.fotografia = fotografia;
-    }
 
     public String getSerialNumber() {
         return serialNumber;
@@ -44,14 +32,6 @@ public class Produto{
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getCodigoBarras() {

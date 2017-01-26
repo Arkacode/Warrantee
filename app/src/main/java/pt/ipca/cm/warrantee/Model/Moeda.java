@@ -5,7 +5,8 @@ package pt.ipca.cm.warrantee.Model;
  */
 
 public class Moeda {
-    String descricao;
+
+    String descricao ="";
 
     public String getDescricao() {
         return descricao;

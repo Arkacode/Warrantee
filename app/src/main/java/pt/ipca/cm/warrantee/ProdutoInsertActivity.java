@@ -1,9 +1,11 @@
 package pt.ipca.cm.warrantee;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import pt.ipca.cm.warrantee.Model.Categoria;
+import pt.ipca.cm.warrantee.Model.Produto;
 import pt.ipca.cm.warrantee.com.google.zxing.integration.android.IntentIntegrator;
 import pt.ipca.cm.warrantee.com.google.zxing.integration.android.IntentResult;
 
@@ -17,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.Profile;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,19 +29,25 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProdutoInsertActivity extends AppCompatActivity implements OnClickListener,AdapterView.OnItemSelectedListener {
+public class ProdutoInsertActivity extends AppCompatActivity implements OnClickListener {
     private Button scanBtn;
     private Button scanBtn2;
     private Button produtoDetalhes;
+    private TextView editTextNomeProduto;
+    private TextView editTextMarca;
     private TextView editTextScanCodBarras;
     private TextView editTextScanCodSerie;
     private int click;
+    Produto produto;
     DatabaseReference categoriasRef = FirebaseDatabase.getInstance().getReference("categorias");
+    DatabaseReference produtosRef = FirebaseDatabase.getInstance().getReference("produtos");
     List<Categoria> categorias = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produto_insert);
+        editTextNomeProduto = (TextView) findViewById(R.id.editTextNomeProduto);
+        editTextMarca = (TextView) findViewById(R.id.editTextMarca);
         scanBtn = (Button)findViewById(R.id.buttonScanBarras);
         scanBtn2 = (Button)findViewById(R.id.buttonScanSerie);
         editTextScanCodBarras = (TextView)findViewById(R.id.editTextCodigoBarras);
@@ -46,8 +55,7 @@ public class ProdutoInsertActivity extends AppCompatActivity implements OnClickL
         scanBtn.setOnClickListener(this);
         produtoDetalhes = (Button)findViewById(R.id.buttonConfirmarProduto);
         produtoDetalhes.setOnClickListener(this);
-        Spinner spinner = (Spinner) findViewById(R.id.spinnerCategoria);
-        spinner.setOnItemSelectedListener(this);
+        final Spinner spinner = (Spinner) findViewById(R.id.spinnerCategoria);
         categoriasRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -70,16 +78,46 @@ public class ProdutoInsertActivity extends AppCompatActivity implements OnClickL
 
             }
         });
-        ArrayAdapter<Categoria> adapter = new ArrayAdapter<Categoria>(this,
+        ArrayAdapter<Categoria> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, categorias);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(0,true);
+        spinner.setSelection(0);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                ((TextView) view).setTextColor(Color.RED);
+                String item = adapterView.getSelectedItem().toString();
+                Toast.makeText(ProdutoInsertActivity.this, item, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
     public void onClick(View v){
         if(v.getId()==R.id.buttonConfirmarProduto) {
+
+
+            String uid = FirebaseDatabase.getInstance().getReference().push().getKey();
+            String userUid = Profile.getCurrentProfile().getId();
+            produto = new Produto();
+            produto.setCodigoBarras(editTextScanCodBarras.getText().toString().trim());
+            produto.setNome(editTextNomeProduto.getText().toString());
+            produto.setMarca(editTextMarca.getText().toString());
+            produto.setSerialNumber(editTextScanCodSerie.getText().toString().trim());
+            //produtosRef.child(userUid).child(uid).setValue(produto);
             Intent myIntent = new Intent(ProdutoInsertActivity.this, ProdutoDetalhesActivity.class);
-            ProdutoInsertActivity.this.startActivity(myIntent);
+            Bundle data = new Bundle();
+            data.putString("codBarras", editTextScanCodBarras.getText().toString());
+            data.putString("nome", editTextNomeProduto.getText().toString());
+            data.putString("marca", editTextMarca.getText().toString());
+            data.putString("codSerie", editTextScanCodSerie.getText().toString());
+            myIntent.putExtras(data);
+            startActivity(myIntent);
         }
         //respond to clicks
         if(v.getId()==R.id.buttonScanBarras){
@@ -117,17 +155,4 @@ public class ProdutoInsertActivity extends AppCompatActivity implements OnClickL
         }
     }
 
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String item = adapterView.getItemAtPosition(i).toString();
-
-        // Showing selected spinner item
-        Toast.makeText(adapterView.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 }
