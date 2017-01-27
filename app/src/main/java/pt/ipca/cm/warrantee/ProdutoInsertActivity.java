@@ -42,6 +42,7 @@ public class ProdutoInsertActivity extends AppCompatActivity implements OnClickL
     DatabaseReference categoriasRef = FirebaseDatabase.getInstance().getReference("categorias");
     DatabaseReference produtosRef = FirebaseDatabase.getInstance().getReference("produtos");
     List<Categoria> categorias = new ArrayList<>();
+    Spinner spinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,9 @@ public class ProdutoInsertActivity extends AppCompatActivity implements OnClickL
         scanBtn.setOnClickListener(this);
         produtoDetalhes = (Button)findViewById(R.id.buttonConfirmarProduto);
         produtoDetalhes.setOnClickListener(this);
-        final Spinner spinner = (Spinner) findViewById(R.id.spinnerCategoria);
+        spinner = (Spinner) findViewById(R.id.spinnerCategoria);
+        final ArrayAdapter<Categoria> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, categorias);
         categoriasRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -69,6 +72,11 @@ public class ProdutoInsertActivity extends AppCompatActivity implements OnClickL
                     }
                     if (isDifferent == categorias.size()){
                         categorias.add(categoria.getValue(Categoria.class));
+
+                        //categoriasString.add(categorias.get(isDifferent).getDescricao());
+
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(adapter);
                     }
                 }
 
@@ -78,44 +86,28 @@ public class ProdutoInsertActivity extends AppCompatActivity implements OnClickL
 
             }
         });
-        ArrayAdapter<Categoria> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, categorias);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(0);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                ((TextView) view).setTextColor(Color.RED);
-                String item = adapterView.getSelectedItem().toString();
-                Toast.makeText(ProdutoInsertActivity.this, item, Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
     public void onClick(View v){
         if(v.getId()==R.id.buttonConfirmarProduto) {
 
 
-            String uid = FirebaseDatabase.getInstance().getReference().push().getKey();
+
             String userUid = Profile.getCurrentProfile().getId();
-            produto = new Produto();
+            /*produto = new Produto();
             produto.setCodigoBarras(editTextScanCodBarras.getText().toString().trim());
             produto.setNome(editTextNomeProduto.getText().toString());
             produto.setMarca(editTextMarca.getText().toString());
             produto.setSerialNumber(editTextScanCodSerie.getText().toString().trim());
-            //produtosRef.child(userUid).child(uid).setValue(produto);
+            //produtosRef.child(userUid).child(uid).setValue(produto);*/
             Intent myIntent = new Intent(ProdutoInsertActivity.this, ProdutoDetalhesActivity.class);
             Bundle data = new Bundle();
             data.putString("codBarras", editTextScanCodBarras.getText().toString());
             data.putString("nome", editTextNomeProduto.getText().toString());
             data.putString("marca", editTextMarca.getText().toString());
             data.putString("codSerie", editTextScanCodSerie.getText().toString());
+            data.putString("categoria",spinner.getSelectedItem().toString());
             myIntent.putExtras(data);
             startActivity(myIntent);
         }
@@ -155,4 +147,15 @@ public class ProdutoInsertActivity extends AppCompatActivity implements OnClickL
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

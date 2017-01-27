@@ -10,8 +10,12 @@ import android.widget.EditText;
 import com.facebook.Profile;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import pt.ipca.cm.warrantee.Model.Categoria;
 import pt.ipca.cm.warrantee.Model.Garantia;
 import android.widget.Spinner;
+import android.widget.TextView;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -20,36 +24,57 @@ import java.util.List;
 
 
 import pt.ipca.cm.warrantee.Model.Moeda;
+import pt.ipca.cm.warrantee.Model.Produto;
 
 public class ProdutoDetalhesActivity extends AppCompatActivity  implements View.OnClickListener {
-    Bundle data = getIntent().getExtras();
+    Bundle data;
     private Button provaCompra;
-    Intent intent;
     private String uid;
+    private Produto produto;
     private Garantia garantia;
+    TextView textViewNomeProduto;
+    TextView textViewMarcaProduto;
     EditText editTextPeriodoGarantia;
     EditText editTextFornecedor;
     EditText editTextLocalCompra;
     EditText editTextDataCompra;
     EditText editTextPreco;
+    DatabaseReference produtosRef = FirebaseDatabase.getInstance().getReference("produto");
     DatabaseReference garantiasRef = FirebaseDatabase.getInstance().getReference("garantias");
     DatabaseReference moedasRef = FirebaseDatabase.getInstance().getReference("moedas");
     List<Moeda> moedas = new ArrayList<>();
-
+    Spinner spinner;
+    String codBarras;
+    String codSerie;
+    String categoria;
+    String nomeProduto;
+    String marca;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_produto_detalhes);
-        intent  = getIntent();
-        uid = intent.getExtras().getString("uid");
+        data = getIntent().getExtras();
+        nomeProduto = data.getString("nome");
+        marca = data.getString("marca");
+        codBarras = data.getString("codBarras");
+        codSerie = data.getString("codSerie");
+        categoria = data.getString("categoria");
+        uid = FirebaseDatabase.getInstance().getReference().push().getKey();
         provaCompra = (Button)findViewById(R.id.buttonConfimarDetalhes);
+        textViewNomeProduto = (TextView) findViewById(R.id.nomeProdutoDetalhes);
+        textViewMarcaProduto = (TextView) findViewById(R.id.textViewMarcaDetalhes);
         editTextPeriodoGarantia = (EditText) findViewById(R.id.editTextPeriodoGarantia);
         editTextFornecedor = (EditText) findViewById(R.id.editTextFornecedor);
         editTextLocalCompra = (EditText) findViewById(R.id.editTextLocalCompra);
         editTextDataCompra = (EditText) findViewById(R.id.editTextDataCompra);
         editTextPreco = (EditText) findViewById(R.id.editTextPreco);
+
+        textViewNomeProduto.setText(nomeProduto);
+        textViewMarcaProduto.setText(marca);
         provaCompra.setOnClickListener(this);
-        Spinner spinner = (Spinner) findViewById(R.id.spinnerMoeda);
+        spinner = (Spinner) findViewById(R.id.spinnerMoeda);
+        final ArrayAdapter<Moeda> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, moedas);
         moedasRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -63,6 +88,9 @@ public class ProdutoDetalhesActivity extends AppCompatActivity  implements View.
                     }
                     if (isDifferent == moedas.size()){
                         moedas.add(moeda.getValue(Moeda.class));
+
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(adapter);
                     }
                 }
 
@@ -72,16 +100,17 @@ public class ProdutoDetalhesActivity extends AppCompatActivity  implements View.
 
             }
         });
-
-        ArrayAdapter<Moeda> adapter = new ArrayAdapter<Moeda>(this,
-                android.R.layout.simple_spinner_item, moedas);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
     }
     public void onClick(View v) {
         if (v.getId() == R.id.buttonConfimarDetalhes) {
             Intent myIntent = new Intent(ProdutoDetalhesActivity.this, ProvaCompraActivity.class);
             ProdutoDetalhesActivity.this.startActivity(myIntent);
+            produto = new Produto();
+            produto.setCodigoBarras(codBarras);
+            produto.setNome(nomeProduto);
+            produto.setSerialNumber(codSerie);
+            produto.setMarca(marca);
+            produtosRef.child(Profile.getCurrentProfile().getId()).child(uid).setValue(produto);
             garantia = new Garantia();
             garantia.setPeriodo(editTextPeriodoGarantia.getText().toString());
             garantia.setFornecedor(editTextFornecedor.getText().toString());

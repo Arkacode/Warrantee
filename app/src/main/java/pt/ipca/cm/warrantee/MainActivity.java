@@ -76,6 +76,10 @@ public class MainActivity extends AppCompatActivity
             utilizadorC.setEmail(email);
             utilizadoresRef.child(utilizadorC.getId()).setValue(utilizadorC);
         }
+        else
+        {
+
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -139,7 +143,7 @@ public class MainActivity extends AppCompatActivity
 
     public void iniciarDb(){
         categoria = new Categoria();
-        String[] categoriaArray =  { "Computadores", "Eletrodomesticos", "Telemóveis", "Televisões", "Rodolfo"};
+        String[] categoriaArray =  { "Computadores", "Eletrodomesticos", "Telemóveis", "Televisões", "Crianças & Bebés", "Automóveis", "Saúde", "Jardim", "Casa", "Outros"};
         for(int i = 0; i < categoriaArray.length; i++) {
             categoria.setDescricao(categoriaArray[i]);
             categoriasRef.child(String.valueOf(i + 1)).setValue(categoria);

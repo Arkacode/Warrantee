@@ -16,10 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Nome Produto"
-        android:id="@+id/asd"
+        android:id="@+id/nomeProdutoDetalhes"
         android:gravity="center_horizontal"
         android:textSize="24sp"/>
     <TextView
+        android:id="@+id/textViewMarcaDetalhes"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

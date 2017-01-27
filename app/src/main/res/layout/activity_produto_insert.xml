@@ -157,7 +157,7 @@
         android:spinnerMode="dropdown"
         android:layout_width="match_parent"
         android:backgroundTint="@color/colorPrimary"
-        android:textColorHint="#05ab9a"
+        android:textColorHint="#000000"
         android:layout_height="80dp" />
 
     <LinearLayout
