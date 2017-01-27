@@ -30,6 +30,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.ipca.cm.warrantee.Model.Categoria;
 import pt.ipca.cm.warrantee.Model.Garantia;
 import pt.ipca.cm.warrantee.Model.Produto;
 import pt.ipca.cm.warrantee.Model.ProdutosGarantias;
@@ -39,11 +40,11 @@ import pt.ipca.cm.warrantee.Model.ProdutosGarantias;
  * A simple {@link Fragment} subclass.
  */
 public class FragmentGarantias extends Fragment {
-    List<Garantia> garantias=new ArrayList<>();
+    final List<ProdutosGarantias>  produtosGarantias = new ArrayList<>();
     ListViewAdapter adapter;
     ListView listViewGarantias;
     MainActivity mainActivity = (MainActivity) getActivity();
-    DatabaseReference produtosRef = FirebaseDatabase.getInstance().getReference("produtos");
+    DatabaseReference produtosRef = FirebaseDatabase.getInstance().getReference("produto");
     DatabaseReference garantiasRef = FirebaseDatabase.getInstance().getReference("garantias");
     public FragmentGarantias() {
         // Required empty public constructor
@@ -69,13 +70,96 @@ public class FragmentGarantias extends Fragment {
         listViewGarantias=(ListView)rootView.findViewById(R.id.listViewGarantias);
         adapter=new ListViewAdapter();
         listViewGarantias.setAdapter(adapter);
+
+
         return rootView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        final List<Produto> produtos = new ArrayList<>();
+        produtosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                for (DataSnapshot currentUser : dataSnapshot.getChildren()){
+
+                    if (currentUser.getKey().equals(String.valueOf(Profile.getCurrentProfile().getId()))){
+
+                        for (DataSnapshot produto : currentUser.getChildren()){
+
+                            Produto p = produto.getValue(Produto.class);
+
+                            int isDiff = 0;
+                            for (int i = 0; i < produtos.size(); i++){
+                                if (p != produtos.get(i)){
+                                    isDiff++;
+                                }
+                            }
+
+                            if (isDiff == produtos.size()){
+                                produtos.add(p);
+
+                                final List<Garantia> garantias  = new ArrayList<>();
+                                garantiasRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot currentUser : dataSnapshot.getChildren()){
+
+                                            if (currentUser.getKey().equals(String.valueOf(Profile.getCurrentProfile().getId()))){
+
+                                                for (DataSnapshot garantia : currentUser.getChildren()){
+
+                                                    Garantia g = garantia.getValue(Garantia.class);
+
+                                                    int isDiff = 0;
+                                                    for (int i = 0; i < garantias.size(); i++){
+                                                        if (g != garantias.get(i)){
+                                                            isDiff++;
+                                                        }
+                                                    }
+
+                                                    if (isDiff == garantias.size()){
+                                                        garantias.add(g);
+
+                                                        for (int i = 0; i < produtos.size(); i++){
+                                                            ProdutosGarantias produtosGarantias1 = new ProdutosGarantias();
+                                                            produtosGarantias1.setNomeProduto(produtos.get(i).getNome());
+                                                            produtosGarantias1.setFornecedor(produtos.get(i).getMarca());
+                                                            //produtosGarantias1.setPeriodo(garantias.get(i).getPeriodo());
+                                                            produtosGarantias.add(produtosGarantias1);
+                                                            break;
+                                                        }
+                                                    }
+
+                                                }
+
+                                            }
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -90,12 +174,12 @@ public class FragmentGarantias extends Fragment {
 
         @Override
         public int getCount() {
-            return mainActivity.produtosGarantias.size();
+            return produtosGarantias.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return mainActivity.produtosGarantias.get(position);
+            return produtosGarantias.get(position);
         }
 
         @Override
@@ -110,13 +194,12 @@ public class FragmentGarantias extends Fragment {
                 convertView = mInflater.inflate(R.layout.row_garantias, null);
 
             TextView textViewTitle=(TextView)convertView.findViewById(R.id.textViewTitulo);
-            ImageView imgViewPhoto = (ImageView) convertView.findViewById(R.id.imageViewFoto);
             TextView textViewMarca =(TextView)convertView.findViewById(R.id.textViewMarca);
-            TextView textViewDays =(TextView)convertView.findViewById(R.id.textViewDias);
+            //TextView textViewDays =(TextView)convertView.findViewById(R.id.textViewDias);
 
-            textViewTitle.setText(mainActivity.produtosGarantias.get(position).getNomeProduto());
-            textViewMarca.setText(mainActivity.produtosGarantias.get(position).getFornecedor());
-            textViewDays.setText(mainActivity.produtosGarantias.get(position).getPeriodo());
+            textViewTitle.setText(produtosGarantias.get(position).getNomeProduto());
+            textViewMarca.setText(produtosGarantias.get(position).getFornecedor());
+            //textViewDays.setText(mainActivity.produtosGarantias.get(position).getPeriodo());
             convertView.setTag(new Integer(position));
             convertView.setClickable(true);
             convertView.setOnClickListener(this);

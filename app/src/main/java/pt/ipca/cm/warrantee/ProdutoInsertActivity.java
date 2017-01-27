@@ -38,9 +38,7 @@ public class ProdutoInsertActivity extends AppCompatActivity implements OnClickL
     private TextView editTextScanCodBarras;
     private TextView editTextScanCodSerie;
     private int click;
-    Produto produto;
     DatabaseReference categoriasRef = FirebaseDatabase.getInstance().getReference("categorias");
-    DatabaseReference produtosRef = FirebaseDatabase.getInstance().getReference("produtos");
     List<Categoria> categorias = new ArrayList<>();
     Spinner spinner;
     @Override
@@ -91,16 +89,6 @@ public class ProdutoInsertActivity extends AppCompatActivity implements OnClickL
     }
     public void onClick(View v){
         if(v.getId()==R.id.buttonConfirmarProduto) {
-
-
-
-            String userUid = Profile.getCurrentProfile().getId();
-            /*produto = new Produto();
-            produto.setCodigoBarras(editTextScanCodBarras.getText().toString().trim());
-            produto.setNome(editTextNomeProduto.getText().toString());
-            produto.setMarca(editTextMarca.getText().toString());
-            produto.setSerialNumber(editTextScanCodSerie.getText().toString().trim());
-            //produtosRef.child(userUid).child(uid).setValue(produto);*/
             Intent myIntent = new Intent(ProdutoInsertActivity.this, ProdutoDetalhesActivity.class);
             Bundle data = new Bundle();
             data.putString("codBarras", editTextScanCodBarras.getText().toString());

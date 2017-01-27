@@ -122,13 +122,14 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
+
         utilizadoresRef.child(uid).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     utilizador = dataSnapshot.getValue(Utilizador.class);
                     textViewEmailDrawer.setText(utilizador.getEmail());
                     textViewNomeDrawer.setText(utilizador.getNome());
-
                     Picasso.with(getApplicationContext())
                             .load("https://graph.facebook.com/" + utilizador.getId() + "/picture?type=large")
                             .into(imagePerfil);
@@ -140,6 +141,8 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
+
+
 
     public void iniciarDb(){
         categoria = new Categoria();
@@ -232,6 +235,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-
+    }
 }
