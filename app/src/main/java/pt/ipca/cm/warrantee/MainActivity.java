@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -204,11 +205,18 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_perfil) {
 
+            FragmentPerfil fragmentPerfil= new FragmentPerfil();
+            android.support.v4.app.FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction1.replace(R.id.frame, fragmentPerfil);
+            fragmentTransaction1.commit();
+
         } else if (id == R.id.nav_settings) {
             FragmentSettings fragmentSobre = new FragmentSettings();
             android.support.v4.app.FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
             fragmentTransaction1.replace(R.id.frame, fragmentSobre);
             fragmentTransaction1.commit();
+
+
         } else if (id == R.id.nav_logout){
             LoginManager.getInstance().logOut();
             FirebaseAuth.getInstance().signOut();
