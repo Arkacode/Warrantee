@@ -1,5 +1,6 @@
 package pt.ipca.cm.warrantee;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -10,19 +11,37 @@ import android.view.MenuItem;
 public class InformacaoGarantiaActivity extends AppCompatActivity {
 
     // Declaring Your View and Variables
-
     Toolbar toolbar;
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
     CharSequence Titles[]={"Garantia","Detalhes"};
     int Numboftabs =2;
+    String nome;
+    String codigoBarras;
+    String marca;
+    String serialNumber;
+    String periodo;
+    String fornecedor;
+    String localCompra;
+    String dataCompra;
+    String preco;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informacao_garantia);
-
+        Intent dataProduto = getIntent();
+        /*nome = dataProduto.getStringExtra("nome");
+        codigoBarras = dataProduto.getStringExtra("codigoBarras");
+        marca = dataProduto.getStringExtra("marca");
+        serialNumber = dataProduto.getStringExtra("serialNumber");
+        periodo = dataProduto.getStringExtra("periodo");
+        fornecedor = dataProduto.getStringExtra("fornecedor");
+        localCompra = dataProduto.getStringExtra("localCompra");
+        dataCompra = dataProduto.getStringExtra("dataCompra");
+        preco = dataProduto.getStringExtra("preco");*/
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
 
@@ -78,4 +97,6 @@ public class InformacaoGarantiaActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

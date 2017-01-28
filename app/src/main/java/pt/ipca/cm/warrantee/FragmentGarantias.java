@@ -4,18 +4,13 @@ package pt.ipca.cm.warrantee;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,26 +21,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.ipca.cm.warrantee.Model.Categoria;
-import pt.ipca.cm.warrantee.Model.Garantia;
 import pt.ipca.cm.warrantee.Model.Produto;
-import pt.ipca.cm.warrantee.Model.ProdutosGarantias;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class FragmentGarantias extends Fragment {
-    final List<ProdutosGarantias>  produtosGarantias = new ArrayList<>();
     ListViewAdapter adapter;
     ListView listViewGarantias;
+
     MainActivity mainActivity = (MainActivity) getActivity();
     DatabaseReference produtosRef = FirebaseDatabase.getInstance().getReference("produto");
-    DatabaseReference garantiasRef = FirebaseDatabase.getInstance().getReference("garantias");
     public FragmentGarantias() {
         // Required empty public constructor
     }
@@ -70,98 +60,13 @@ public class FragmentGarantias extends Fragment {
         listViewGarantias=(ListView)rootView.findViewById(R.id.listViewGarantias);
         adapter=new ListViewAdapter();
         listViewGarantias.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
 
         return rootView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        final List<Produto> produtos = new ArrayList<>();
-        produtosRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot currentUser : dataSnapshot.getChildren()){
-
-                    if (currentUser.getKey().equals(String.valueOf(Profile.getCurrentProfile().getId()))){
-
-                        for (DataSnapshot produto : currentUser.getChildren()){
-
-                            Produto p = produto.getValue(Produto.class);
-
-                            int isDiff = 0;
-                            for (int i = 0; i < produtos.size(); i++){
-                                if (p != produtos.get(i)){
-                                    isDiff++;
-                                }
-                            }
-
-                            if (isDiff == produtos.size()){
-                                produtos.add(p);
-
-                                final List<Garantia> garantias  = new ArrayList<>();
-                                garantiasRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        for (DataSnapshot currentUser : dataSnapshot.getChildren()){
-
-                                            if (currentUser.getKey().equals(String.valueOf(Profile.getCurrentProfile().getId()))){
-
-                                                for (DataSnapshot garantia : currentUser.getChildren()){
-
-                                                    Garantia g = garantia.getValue(Garantia.class);
-
-                                                    int isDiff = 0;
-                                                    for (int i = 0; i < garantias.size(); i++){
-                                                        if (g != garantias.get(i)){
-                                                            isDiff++;
-                                                        }
-                                                    }
-
-                                                    if (isDiff == garantias.size()){
-                                                        garantias.add(g);
-
-                                                        for (int i = 0; i < produtos.size(); i++){
-                                                            ProdutosGarantias produtosGarantias1 = new ProdutosGarantias();
-                                                            produtosGarantias1.setNomeProduto(produtos.get(i).getNome());
-                                                            produtosGarantias1.setFornecedor(produtos.get(i).getMarca());
-                                                            //produtosGarantias1.setPeriodo(garantias.get(i).getPeriodo());
-                                                            produtosGarantias.add(produtosGarantias1);
-                                                            break;
-                                                        }
-                                                    }
-
-                                                }
-
-                                            }
-
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
 
     class ListViewAdapter extends BaseAdapter implements View.OnClickListener{
 
@@ -174,12 +79,12 @@ public class FragmentGarantias extends Fragment {
 
         @Override
         public int getCount() {
-            return produtosGarantias.size();
+            return mainActivity.produtos.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return produtosGarantias.get(position);
+            return mainActivity.produtos.get(position);
         }
 
         @Override
@@ -195,16 +100,19 @@ public class FragmentGarantias extends Fragment {
 
             TextView textViewTitle=(TextView)convertView.findViewById(R.id.textViewTitulo);
             TextView textViewMarca =(TextView)convertView.findViewById(R.id.textViewMarca);
-            //TextView textViewDays =(TextView)convertView.findViewById(R.id.textViewDias);
+            TextView textViewDays =(TextView)convertView.findViewById(R.id.textViewDias);
 
-            textViewTitle.setText(produtosGarantias.get(position).getNomeProduto());
-            textViewMarca.setText(produtosGarantias.get(position).getFornecedor());
-            //textViewDays.setText(mainActivity.produtosGarantias.get(position).getPeriodo());
+            textViewTitle.setText(mainActivity.produtos.get(position).getNome());
+            textViewMarca.setText(mainActivity.produtos.get(position).getMarca());
+            textViewDays.setText(mainActivity.produtos.get(position).getPeriodo());
+
             convertView.setTag(new Integer(position));
             convertView.setClickable(true);
             convertView.setOnClickListener(this);
             return convertView;
         }
+
+
 
         @Override
         public void onClick(View v) {
@@ -234,6 +142,19 @@ public class FragmentGarantias extends Fragment {
                     commit();
 
         }*/
+
+            Integer position=(Integer) v.getTag();
+            Intent dataProduto = new Intent(getActivity().getApplicationContext(), InformacaoGarantiaActivity.class);
+            dataProduto.putExtra("nome", mainActivity.produtos.get(position).getNome());
+            dataProduto.putExtra("codigoBarras", mainActivity.produtos.get(position).getCodigoBarras());
+            dataProduto.putExtra("serialNumber", mainActivity.produtos.get(position).getSerialNumber());
+            dataProduto.putExtra("periodo", mainActivity.produtos.get(position).getPeriodo());
+            dataProduto.putExtra("fornecedor", mainActivity.produtos.get(position).getFornecedor());
+            dataProduto.putExtra("localCompra", mainActivity.produtos.get(position).getLocalCompra());
+            dataProduto.putExtra("dataCompra", mainActivity.produtos.get(position).getDataCompra());
+            dataProduto.putExtra("preco", mainActivity.produtos.get(position).getPreco());
+
+            startActivity(dataProduto);
      }
     }
 }

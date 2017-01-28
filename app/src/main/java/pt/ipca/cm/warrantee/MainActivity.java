@@ -2,10 +2,7 @@ package pt.ipca.cm.warrantee;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,13 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,21 +29,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import io.realm.RealmResults;
-import io.realm.exceptions.RealmMigrationNeededException;
 import pt.ipca.cm.warrantee.Model.Categoria;
-import pt.ipca.cm.warrantee.Model.Garantia;
 import pt.ipca.cm.warrantee.Model.Moeda;
 import pt.ipca.cm.warrantee.Model.Produto;
-import pt.ipca.cm.warrantee.Model.ProdutosGarantias;
 import pt.ipca.cm.warrantee.Model.Utilizador;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static List<Categoria> categorias = new ArrayList<>();
-    public static List<ProdutosGarantias> produtosGarantias = new ArrayList<>();
+    public static List<Produto> produtos = new ArrayList<>();
     String uid = Profile.getCurrentProfile().getId();
     Categoria categoria;
     Moeda moeda;
@@ -55,7 +45,7 @@ public class MainActivity extends AppCompatActivity
     Utilizador utilizador;
     DatabaseReference utilizadoresRef = FirebaseDatabase.getInstance().getReference("utilizadores");
     DatabaseReference categoriasRef = FirebaseDatabase.getInstance().getReference("categorias");
-    DatabaseReference produtosRef = FirebaseDatabase.getInstance().getReference("produtos");
+    DatabaseReference produtosRef = FirebaseDatabase.getInstance().getReference("produto");
     DatabaseReference garantiasRef = FirebaseDatabase.getInstance().getReference("garantias");
     DatabaseReference moedasRef = FirebaseDatabase.getInstance().getReference("moedas");
     @Override
@@ -99,6 +89,42 @@ public class MainActivity extends AppCompatActivity
         tx.commit();
         iniciarDb();
 
+        produtosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot currentUser : dataSnapshot.getChildren()){
+
+                    if (currentUser.getKey().equals(String.valueOf(Profile.getCurrentProfile().getId()))){
+
+                        for (DataSnapshot produto : currentUser.getChildren()){
+
+                            Produto p = produto.getValue(Produto.class);
+
+                            int isDiff = 0;
+                            for (int i = 0; i < produtos.size(); i++){
+                                if (p != produtos.get(i)){
+                                    isDiff++;
+                                }
+                            }
+
+                            if (isDiff == produtos.size()){
+                                produtos.add(p);
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         categoriasRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -122,6 +148,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
 
 
         utilizadoresRef.child(uid).addValueEventListener(new ValueEventListener() {
@@ -238,6 +265,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+
 
     }
 }

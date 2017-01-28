@@ -11,8 +11,6 @@ import com.facebook.Profile;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import pt.ipca.cm.warrantee.Model.Categoria;
-import pt.ipca.cm.warrantee.Model.Garantia;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,7 +29,6 @@ public class ProdutoDetalhesActivity extends AppCompatActivity  implements View.
     private Button provaCompra;
     private String uid;
     private Produto produto;
-    private Garantia garantia;
     TextView textViewNomeProduto;
     TextView textViewMarcaProduto;
     EditText editTextPeriodoGarantia;
@@ -110,14 +107,13 @@ public class ProdutoDetalhesActivity extends AppCompatActivity  implements View.
             produto.setNome(nomeProduto);
             produto.setSerialNumber(codSerie);
             produto.setMarca(marca);
+            produto.setPeriodo(editTextPeriodoGarantia.getText().toString());
+            produto.setFornecedor(editTextFornecedor.getText().toString());
+            produto.setLocalCompra(editTextLocalCompra.getText().toString());
+            produto.setDataCompra(editTextDataCompra.getText().toString());
+            produto.setPreco(editTextPreco.getText().toString());
             produtosRef.child(Profile.getCurrentProfile().getId()).child(uid).setValue(produto);
-            garantia = new Garantia();
-            garantia.setPeriodo(editTextPeriodoGarantia.getText().toString());
-            garantia.setFornecedor(editTextFornecedor.getText().toString());
-            garantia.setLocalCompra(editTextLocalCompra.getText().toString());
-            garantia.setDataCompra(editTextDataCompra.getText().toString());
-            garantia.setPreco(editTextPreco.getText().toString());
-            garantiasRef.child(Profile.getCurrentProfile().getId()).child(uid).setValue(garantia);
+
 
         }
     }
