@@ -49,6 +49,7 @@ public class InformacaoGarantiaActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter =  new ViewPagerAdapter(getSupportFragmentManager(),Titles,Numboftabs);
 
@@ -80,7 +81,7 @@ public class InformacaoGarantiaActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
-        return true;
+        return false;
     }
 
     @Override

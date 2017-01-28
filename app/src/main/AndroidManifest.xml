@@ -47,7 +47,11 @@
             android:label="Prova de compra"
             android:parentActivityName=".ProdutoDetalhesActivity"
             android:theme="@style/AppTheme.ActionBar" />
-        <activity android:name=".InformacaoGarantiaActivity"></activity>
+
+        <activity android:name=".InformacaoGarantiaActivity"
+            android:label="Informação Produto"
+           />
+
     </application>
 
 </manifest>

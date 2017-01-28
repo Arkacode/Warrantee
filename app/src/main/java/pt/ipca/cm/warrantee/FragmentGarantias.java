@@ -138,28 +138,12 @@ public class FragmentGarantias extends Fragment {
             TextView textViewDays =(TextView)convertView.findViewById(R.id.textViewDias);
             textViewTitle.setText(produtos.get(position).getNome());
             textViewMarca.setText(produtos.get(position).getMarca());
-            String dt = produtos.get(position).getDataCompra();  // Start date
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Calendar c = Calendar.getInstance();
-            try {
-                c.setTime(sdf.parse(dt));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            c.add(Calendar.DATE, Integer.valueOf(produtos.get(position).getPeriodo()) * 365);// number of days to add, can also use Calendar.DAY_OF_MONTH in place of Calendar.DATE
-            String date = sdf.format(c.getTime());
-            Date futureDate = null;
-            try {
-                futureDate = sdf.parse(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Date currentDate = new Date();
-            if (!currentDate.after(futureDate)) {
-                long diff = futureDate.getTime() - currentDate.getTime();
-                days = diff / (24 * 60 * 60 * 1000);
-            }
-            textViewDays.setText(String.valueOf(days) + " restantes");
+
+
+
+
+
+            textViewDays.setText(produtos.get(position).getPeriodo() + " restantes");
             convertView.setTag(new Integer(position));
             convertView.setClickable(true);
             convertView.setOnClickListener(this);
