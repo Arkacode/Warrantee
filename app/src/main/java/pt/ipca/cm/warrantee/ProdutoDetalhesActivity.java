@@ -13,11 +13,17 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -113,8 +119,6 @@ public class ProdutoDetalhesActivity extends AppCompatActivity  implements View.
             produto.setDataCompra(editTextDataCompra.getText().toString());
             produto.setPreco(editTextPreco.getText().toString());
             produtosRef.child(Profile.getCurrentProfile().getId()).child(uid).setValue(produto);
-
-
         }
     }
 }

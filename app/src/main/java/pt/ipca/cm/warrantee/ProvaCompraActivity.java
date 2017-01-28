@@ -43,8 +43,9 @@ public class ProvaCompraActivity extends AppCompatActivity implements View.OnCli
 
     public void onClick(View v) {
         if (v.getId() == R.id.buttonNext) {
-            Intent myIntent = new Intent(ProvaCompraActivity.this, InformacaoGarantiaActivity.class);
-            ProvaCompraActivity.this.startActivity(myIntent);
+            Intent myIntent = new Intent(ProvaCompraActivity.this, MainActivity.class);
+            startActivity(myIntent);
+            finish();
         }
     }
 }

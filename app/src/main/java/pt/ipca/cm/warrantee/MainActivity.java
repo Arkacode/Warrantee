@@ -57,18 +57,18 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        if(!extras.getString("nome").equals("")  && !extras.getString("nome").equals("")) {
-            String nome = extras.getString("nome");
-            String email = extras.getString("email");
-            utilizadorC = new Utilizador();
-            utilizadorC.setId(Profile.getCurrentProfile().getId());
-            utilizadorC.setNome(nome);
-            utilizadorC.setEmail(email);
-            utilizadoresRef.child(utilizadorC.getId()).setValue(utilizadorC);
-        }
-        else
-        {
+        if (extras != null) {
+            if (!extras.getString("nome").equals("") && !extras.getString("nome").equals("")) {
+                String nome = extras.getString("nome");
+                String email = extras.getString("email");
+                utilizadorC = new Utilizador();
+                utilizadorC.setId(Profile.getCurrentProfile().getId());
+                utilizadorC.setNome(nome);
+                utilizadorC.setEmail(email);
+                utilizadoresRef.child(utilizadorC.getId()).setValue(utilizadorC);
+            } else {
 
+            }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -89,42 +89,7 @@ public class MainActivity extends AppCompatActivity
         tx.commit();
         iniciarDb();
 
-        produtosRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot currentUser : dataSnapshot.getChildren()){
-
-                    if (currentUser.getKey().equals(String.valueOf(Profile.getCurrentProfile().getId()))){
-
-                        for (DataSnapshot produto : currentUser.getChildren()){
-
-                            Produto p = produto.getValue(Produto.class);
-
-                            int isDiff = 0;
-                            for (int i = 0; i < produtos.size(); i++){
-                                if (p != produtos.get(i)){
-                                    isDiff++;
-                                }
-                            }
-
-                            if (isDiff == produtos.size()){
-                                produtos.add(p);
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
         categoriasRef.addValueEventListener(new ValueEventListener() {
             @Override
