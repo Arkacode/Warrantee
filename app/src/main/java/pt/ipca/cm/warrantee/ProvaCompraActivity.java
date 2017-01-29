@@ -68,12 +68,14 @@ public class ProvaCompraActivity extends AppCompatActivity implements View.OnCli
         data = getIntent().getExtras();
         codBarras = data.getString("codBarras");
         nome = data.getString("nome");
-        marca = data.getString("codSerie");
+        marca = data.getString("marca");
         categoria = data.getString("categoria");
         periodo = data.getString("periodo");
         fornecedor = data.getString("fornecedor");
-        localCompra = data.getString("dataCompra");
+        localCompra = data.getString("localCompra");
+        dataCompra = data.getString("dataCompra");
         preco = data.getString("preco");
+        codSerie = data.getString("codSerie");
         uid = FirebaseDatabase.getInstance().getReference().push().getKey();
         imageView = (ImageView)this.findViewById(R.id.imageViewFotoComprovativo);
         storage = FirebaseStorage.getInstance().getReference();

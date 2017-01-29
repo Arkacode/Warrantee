@@ -54,24 +54,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-<<<<<<< HEAD
-=======
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            if (!extras.getString("nome").equals("") && !extras.getString("email").equals("")) {
-                String nome = extras.getString("nome");
-                String email = extras.getString("email");
-                utilizadorC = new Utilizador();
-                utilizadorC.setId(Profile.getCurrentProfile().getId());
-                utilizadorC.setNome(nome);
-                utilizadorC.setEmail(email);
-                utilizadoresRef.child(utilizadorC.getId()).setValue(utilizadorC);
-            } else {
 
-            }
-        }
->>>>>>> origin/master
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
