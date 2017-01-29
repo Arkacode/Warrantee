@@ -15,6 +15,9 @@ public class Utilizador {
     private String email;
     private String password;
     private String dataNasc;
+    private String pais;
+    private String numTel;
+    private String codPostal;
 
 
     public String getId() {
@@ -60,5 +63,29 @@ public class Utilizador {
 
     public void setDataNasc(String dataNasc) {
         this.dataNasc = dataNasc;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
+    public String getNumTel() {
+        return numTel;
+    }
+
+    public void setNumTel(String numTel) {
+        this.numTel = numTel;
+    }
+
+    public String getCodPostal() {
+        return codPostal;
+    }
+
+    public void setCodPostal(String codPostal) {
+        this.codPostal = codPostal;
     }
 }
