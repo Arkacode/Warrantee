@@ -56,8 +56,6 @@ public class FragmentGarantias extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "O Rodolfo é lindo", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
                 Intent intent = new Intent(getActivity(),ProdutoInsertActivity.class);
                 startActivity(intent);
             }
@@ -138,11 +136,6 @@ public class FragmentGarantias extends Fragment {
             TextView textViewDays =(TextView)convertView.findViewById(R.id.textViewDias);
             textViewTitle.setText(produtos.get(position).getNome());
             textViewMarca.setText(produtos.get(position).getMarca());
-
-
-
-
-
             textViewDays.setText(produtos.get(position).getPeriodo() + " restantes");
             convertView.setTag(new Integer(position));
             convertView.setClickable(true);
