@@ -106,9 +106,8 @@ public class ProdutoDetalhesActivity extends AppCompatActivity  implements View.
     }
     public void onClick(View v) {
         if (v.getId() == R.id.buttonConfimarDetalhes) {
-            Intent myIntent = new Intent(ProdutoDetalhesActivity.this, ProvaCompraActivity.class);
-            ProdutoDetalhesActivity.this.startActivity(myIntent);
-            produto = new Produto();
+
+            /*produto = new Produto();
             produto.setCodigoBarras(codBarras);
             produto.setNome(nomeProduto);
             produto.setSerialNumber(codSerie);
@@ -117,8 +116,14 @@ public class ProdutoDetalhesActivity extends AppCompatActivity  implements View.
             produto.setFornecedor(editTextFornecedor.getText().toString());
             produto.setLocalCompra(editTextLocalCompra.getText().toString());
             produto.setDataCompra(editTextDataCompra.getText().toString());
-            produto.setPreco(editTextPreco.getText().toString());
-            produtosRef.child(Profile.getCurrentProfile().getId()).child(uid).setValue(produto);
+            produto.setPreco(editTextPreco.getText().toString());*/
+            data.putString("periodo",editTextPeriodoGarantia.getText().toString());
+            data.putString("fornecedor",editTextFornecedor.getText().toString());
+            data.putString("preco",editTextPreco.getText().toString());
+            //produtosRef.child(Profile.getCurrentProfile().getId()).child(uid).setValue(produto);
+            Intent myIntent = new Intent(ProdutoDetalhesActivity.this, ProvaCompraActivity.class);
+            myIntent.putExtra("data",data);
+            ProdutoDetalhesActivity.this.startActivity(myIntent);
         }
     }
 }
