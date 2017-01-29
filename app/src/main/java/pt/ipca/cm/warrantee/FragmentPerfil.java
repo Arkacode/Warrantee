@@ -30,6 +30,7 @@ public class FragmentPerfil extends Fragment {
 
 
 
+
         return rootView;
     }
 

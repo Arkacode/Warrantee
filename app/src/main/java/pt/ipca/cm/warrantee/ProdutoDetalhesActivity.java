@@ -122,7 +122,7 @@ public class ProdutoDetalhesActivity extends AppCompatActivity  implements View.
             data.putString("preco",editTextPreco.getText().toString());
             //produtosRef.child(Profile.getCurrentProfile().getId()).child(uid).setValue(produto);
             Intent myIntent = new Intent(ProdutoDetalhesActivity.this, ProvaCompraActivity.class);
-            myIntent.putExtra("data",data);
+            myIntent.putExtras(data);
             ProdutoDetalhesActivity.this.startActivity(myIntent);
         }
     }
