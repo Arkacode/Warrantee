@@ -7,13 +7,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.facebook.Profile;
+import com.squareup.picasso.Picasso;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class FragmentInformacaoDetalhes extends Fragment {
+    String imagemCompraURL;
     String nome;
     String codigoBarras;
     String marca;
@@ -24,6 +30,7 @@ public class FragmentInformacaoDetalhes extends Fragment {
     String dataCompra;
     String preco;
     Intent dataProduto;
+    ImageView provaCompra;
     TextView dataCmp;
     TextView localCmp;
     TextView precoProduto;
@@ -42,6 +49,7 @@ public class FragmentInformacaoDetalhes extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_informacao_detalhes, container, false);
         // Inflate the layout for this fragment
         dataProduto = getActivity().getIntent();
+        imagemCompraURL = dataProduto.getStringExtra("imagem");
         nome = dataProduto.getStringExtra("nome");
         codigoBarras = dataProduto.getStringExtra("codigoBarras");
         marca = dataProduto.getStringExtra("marca");
@@ -51,13 +59,13 @@ public class FragmentInformacaoDetalhes extends Fragment {
         localCompra = dataProduto.getStringExtra("localCompra");
         dataCompra = dataProduto.getStringExtra("dataCompra");
         preco = dataProduto.getStringExtra("preco");
-
+        provaCompra = (ImageView) rootView.findViewById(R.id.imageViewImagemCompra);
         dataCmp = (TextView)rootView.findViewById(R.id.textViewDataCompra);
         localCmp = (TextView)rootView.findViewById(R.id.textViewLocalCompra);
         precoProduto = (TextView)rootView.findViewById(R.id.textViewPrecoProduto);
         codigoBarrasProduto = (TextView)rootView.findViewById(R.id.textViewCodigoBarrasProduto);
         numSerie = (TextView)rootView.findViewById(R.id.textViewNumSerie);
-        periodoInfo = (TextView)rootView.findViewById(R.id.textViewPrecoProduto);
+        periodoInfo = (TextView)rootView.findViewById(R.id.textViewPeriodoInfo);
 
         dataCmp.setText(dataCompra);
         localCmp.setText(localCompra);
@@ -65,8 +73,13 @@ public class FragmentInformacaoDetalhes extends Fragment {
         codigoBarrasProduto.setText(codigoBarras);
         numSerie.setText(serialNumber);
         periodoInfo.setText(periodo);
-
+        Picasso.with(getContext())
+                .load(imagemCompraURL)
+                .into(provaCompra);
         return rootView;
     }
+
+
+
 
 }

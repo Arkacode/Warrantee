@@ -1,3 +1,7 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -24,7 +28,8 @@
         android:layout_height="150dp"
         app:srcCompat="@color/GreenMain"
         android:layout_below="@+id/textViewNomeInfoGarantia"
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewImagemCompra"
+        android:scaleType="fitXY"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -223,3 +228,4 @@
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>

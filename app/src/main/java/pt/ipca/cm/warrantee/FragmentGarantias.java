@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +44,7 @@ public class FragmentGarantias extends Fragment {
     MainActivity mainActivity = (MainActivity) getActivity();
     DatabaseReference produtosRef = FirebaseDatabase.getInstance().getReference("produto");
     private long days;
+    float progress;
     public FragmentGarantias() {
         // Required empty public constructor
     }
@@ -139,9 +142,35 @@ public class FragmentGarantias extends Fragment {
             TextView textViewTitle=(TextView)convertView.findViewById(R.id.textViewTitulo);
             TextView textViewMarca =(TextView)convertView.findViewById(R.id.textViewMarca);
             TextView textViewDays =(TextView)convertView.findViewById(R.id.textViewDias);
+            ProgressBar progressBarDias = (ProgressBar) convertView.findViewById(R.id.progressBarDias);
             textViewTitle.setText(produtos.get(position).getNome());
             textViewMarca.setText(produtos.get(position).getMarca());
-            textViewDays.setText(produtos.get(position).getPeriodo() + " restantes");
+            String dt = produtos.get(position).getDataCompra();  // Start date
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar c = Calendar.getInstance();
+            try {
+                c.setTime(sdf.parse(dt));
+                c.add(Calendar.DATE, Integer.valueOf(produtos.get(position).getPeriodo()) * 365);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            // number of days to add, can also use Calendar.DAY_OF_MONTH in place of Calendar.DATE
+            String date = sdf.format(c.getTime());
+            Date futureDate = null;
+            try {
+                futureDate = sdf.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Date currentDate = new Date();
+            if (!currentDate.after(futureDate)) {
+                long diff = futureDate.getTime() - currentDate.getTime();
+                days = diff / (24 * 60 * 60 * 1000);
+                int totalDias = Integer.valueOf(produtos.get(position).getPeriodo()) * 365;
+                progress = totalDias-days*100/Integer.valueOf(produtos.get(position).getPeriodo()) * 365;
+            }
+            textViewDays.setText(String.valueOf(days) + " dias restantes");
+            progressBarDias.setProgress(Math.round(progress));
             convertView.setTag(new Integer(position));
             convertView.setClickable(true);
             convertView.setOnClickListener(this);
@@ -156,33 +185,6 @@ public class FragmentGarantias extends Fragment {
 
         @Override
         public void onClick(View v) {
-           /*Integer position=(Integer) v.getTag();
-            Log.d("NewsFeed","Desc:"+noticias.get(position).getDescription());
-            Log.d("NewsFeed","Clicked:"+noticias.get(position).getCity());
-            Log.d("NewsFeed","Clicked:"+noticias.get(position).getDatePub());
-            Log.d("NewsFeed","Clicked:"+noticias.get(position).getLocation());
-            Log.d("NewsFeed","Clicked:"+noticias.get(position).getImageLink());
-            //inserir tudo num bundle a informação do publicação
-            Bundle bundle = new Bundle();
-            bundle.putString(InfoArticleFragment.EXTRA_TITLE,noticias.get(position).getTitle());
-            bundle.putString(InfoArticleFragment.EXTRA_DESC,noticias.get(position).getDescription());
-            bundle.putString(InfoArticleFragment.EXTRA_PUB_DATE,noticias.get(position).getDatePub().toString());
-            bundle.putString(InfoArticleFragment.EXTRA_LINK_IMAGE,noticias.get(position).getImageLink());
-            bundle.putString(InfoArticleFragment.EXTRA_CITY,noticias.get(position).getCity());
-            bundle.putString(InfoArticleFragment.EXTRA_LOCATION,noticias.get(position).getLocation());
-            //mudar de fragment
-            InfoArticleFragment infoArticleFragment = new InfoArticleFragment();
-            FragmentManager fragmentManager=getFragmentManager();
-            infoArticleFragment.setArguments(bundle);
-            fragmentManager.
-                    beginTransaction().
-                    replace(R.id.content_frame,infoArticleFragment).
-                    setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE).
-                    addToBackStack(null).
-                    commit();
-
-        }*/
-
             Integer position=(Integer) v.getTag();
             Intent dataProduto = new Intent(getActivity().getApplicationContext(), InformacaoGarantiaActivity.class);
             dataProduto.putExtra("nome", produtos.get(position).getNome());
@@ -193,7 +195,7 @@ public class FragmentGarantias extends Fragment {
             dataProduto.putExtra("localCompra", produtos.get(position).getLocalCompra());
             dataProduto.putExtra("dataCompra", produtos.get(position).getDataCompra());
             dataProduto.putExtra("preco", produtos.get(position).getPreco());
-
+            dataProduto.putExtra("imagem", produtos.get(position).getImagem());
             startActivity(dataProduto);
      }
     }
