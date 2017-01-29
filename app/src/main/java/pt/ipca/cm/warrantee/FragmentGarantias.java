@@ -163,12 +163,11 @@ public class FragmentGarantias extends Fragment {
                 e.printStackTrace();
             }
             Date currentDate = new Date();
-            if (!currentDate.after(futureDate)) {
-                long diff = futureDate.getTime() - currentDate.getTime();
-                days = diff / (24 * 60 * 60 * 1000);
-                int totalDias = Integer.valueOf(produtos.get(position).getPeriodo()) * 365;
-                progress = totalDias-days*100/Integer.valueOf(produtos.get(position).getPeriodo()) * 365;
-            }
+            long diff = futureDate.getTime() - currentDate.getTime();
+            days = diff / (24 * 60 * 60 * 1000);
+            int totalDias = Integer.valueOf(produtos.get(position).getPeriodo()) * 365;
+            float diferencaDias = totalDias - days;
+            progress = (diferencaDias * 100) / (Integer.valueOf(produtos.get(position).getPeriodo()) * 365);
             textViewDays.setText(String.valueOf(days) + " dias restantes");
             progressBarDias.setProgress(Math.round(progress));
             convertView.setTag(new Integer(position));
