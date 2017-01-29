@@ -10,33 +10,13 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class Utilizador {
-    private String id;
     private String nome;
     private String email;
-    private String password;
-    private String dataNasc;
-    private String pais;
-    private String numTel;
     private String codPostal;
+    private String numTel;
+    private String pais;
 
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-
-    public String getPassword() {
-
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getEmail() {
         return email;
@@ -55,22 +35,12 @@ public class Utilizador {
         this.nome = nome;
     }
 
-
-
-    public String getDataNasc() {
-        return dataNasc;
+    public String getCodPostal() {
+        return codPostal;
     }
 
-    public void setDataNasc(String dataNasc) {
-        this.dataNasc = dataNasc;
-    }
-
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
+    public void setCodPostal(String codPostal) {
+        this.codPostal = codPostal;
     }
 
     public String getNumTel() {
@@ -81,11 +51,11 @@ public class Utilizador {
         this.numTel = numTel;
     }
 
-    public String getCodPostal() {
-        return codPostal;
+    public String getPais() {
+        return pais;
     }
 
-    public void setCodPostal(String codPostal) {
-        this.codPostal = codPostal;
+    public void setPais(String pais) {
+        this.pais = pais;
     }
 }

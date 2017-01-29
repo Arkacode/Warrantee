@@ -53,43 +53,36 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            if (!extras.getString("nome").equals("") && !extras.getString("nome").equals("")) {
-                String nome = extras.getString("nome");
-                String email = extras.getString("email");
-                utilizadorC = new Utilizador();
-                utilizadorC.setId(Profile.getCurrentProfile().getId());
-                utilizadorC.setNome(nome);
-                utilizadorC.setEmail(email);
-                utilizadoresRef.child(utilizadorC.getId()).setValue(utilizadorC);
-            } else {
-
-            }
-        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View hView =  navigationView.getHeaderView(0);
         final TextView textViewNomeDrawer = (TextView) hView.findViewById(R.id.textViewNomeDrawer);
         final TextView textViewEmailDrawer = (TextView) hView.findViewById(R.id.textViewEmailDrawer);
         final CircleImageView imagePerfil = (CircleImageView) hView.findViewById(R.id.imageViewDrawer);
-       /* textViewNomeDrawer.setText();
-        textViewEmailDrawer.setText();*/
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(R.id.frame, new FragmentGarantias());
         tx.commit();
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            if (!extras.getString("nome").equals("") && !extras.getString("email").equals("")) {
+                String nome = extras.getString("nome");
+                String email = extras.getString("email");
+                utilizadorC = new Utilizador();
+                utilizadorC.setNome(nome);
+                utilizadorC.setEmail(email);
+                utilizadoresRef.child(Profile.getCurrentProfile().getId()).setValue(utilizadorC);
+            } else {
+
+            }
+        }
         iniciarDb();
-
-
 
         categoriasRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -123,7 +116,7 @@ public class MainActivity extends AppCompatActivity
                     textViewEmailDrawer.setText(utilizador.getEmail());
                     textViewNomeDrawer.setText(utilizador.getNome());
                     Picasso.with(getApplicationContext())
-                            .load("https://graph.facebook.com/" + utilizador.getId() + "/picture?type=large")
+                            .load("https://graph.facebook.com/" + Profile.getCurrentProfile().getId() + "/picture?type=large")
                             .into(imagePerfil);
                 }
 
