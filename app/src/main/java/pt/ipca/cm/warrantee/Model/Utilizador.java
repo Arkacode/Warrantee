@@ -1,9 +1,6 @@
 package pt.ipca.cm.warrantee.Model;
 
-import io.realm.Realm;
-import io.realm.RealmObject;
-import io.realm.RealmResults;
-import io.realm.annotations.PrimaryKey;
+
 
 /**
  * Created by Rafael on 17/01/2017.
