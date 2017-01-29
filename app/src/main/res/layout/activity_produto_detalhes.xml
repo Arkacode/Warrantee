@@ -43,9 +43,10 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:id="@+id/editTextPeriodoGarantia"
         android:hint="1 ano (12meses)"
+
         android:layout_alignParentStart="true"
         />
     <TextView
@@ -90,7 +91,8 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:id="@+id/editTextDataCompra"
-        android:hint="(04/01/2017)Hoje"
+        android:focusable="false"
+        android:hint="Selecionar data"
         android:layout_alignParentStart="true"
         />
 
@@ -138,7 +140,7 @@
         <EditText
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:inputType="textPersonName"
+            android:inputType="numberDecimal"
             android:id="@+id/editTextPreco"
             android:hint=""
             android:layout_weight="5"
