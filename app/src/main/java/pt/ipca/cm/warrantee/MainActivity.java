@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            if (!extras.getString("nome").equals("") && !extras.getString("nome").equals("")) {
+            if (!extras.getString("nome").equals("") && !extras.getString("email").equals("")) {
                 String nome = extras.getString("nome");
                 String email = extras.getString("email");
                 utilizadorC = new Utilizador();

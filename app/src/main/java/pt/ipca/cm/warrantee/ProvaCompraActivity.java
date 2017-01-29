@@ -20,8 +20,11 @@ import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.facebook.Profile;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -56,6 +59,8 @@ public class ProvaCompraActivity extends AppCompatActivity implements View.OnCli
     String localCompra;
     String dataCompra;
     String preco;
+    String uid;
+    DatabaseReference produtosRef = FirebaseDatabase.getInstance().getReference("produto");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,10 +74,10 @@ public class ProvaCompraActivity extends AppCompatActivity implements View.OnCli
         fornecedor = data.getString("fornecedor");
         localCompra = data.getString("dataCompra");
         preco = data.getString("preco");
-
+        uid = FirebaseDatabase.getInstance().getReference().push().getKey();
         imageView = (ImageView)this.findViewById(R.id.imageViewFotoComprovativo);
         storage = FirebaseStorage.getInstance().getReference();
-        provasRef =  storage.child("prova.jpg");
+        provasRef =  storage.child(nome+codBarras+".jpg");
         Button photoButton = (Button) this.findViewById(R.id.buttonTirarFoto);
         progressDialog = new ProgressDialog(this);
         values = new ContentValues();
@@ -227,6 +232,8 @@ public class ProvaCompraActivity extends AppCompatActivity implements View.OnCli
                     produto.setLocalCompra(localCompra);
                     produto.setDataCompra(dataCompra);
                     produto.setPreco(preco);
+                    produto.setImagem(downloadUrl.toString());
+                    produtosRef.child(Profile.getCurrentProfile().getId()).child(uid).setValue(produto);
                 }
             });
             Intent myIntent = new Intent(ProvaCompraActivity.this, MainActivity.class);

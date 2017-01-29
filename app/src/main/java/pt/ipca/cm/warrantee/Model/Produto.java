@@ -3,11 +3,6 @@ package pt.ipca.cm.warrantee.Model;
 /**
  * Created by Rafael on 17/01/2017.
  */
-import io.realm.Realm;
-import io.realm.RealmList;
-import io.realm.RealmObject;
-import io.realm.RealmResults;
-
 public class Produto{
     String nome;
     private String codigoBarras;

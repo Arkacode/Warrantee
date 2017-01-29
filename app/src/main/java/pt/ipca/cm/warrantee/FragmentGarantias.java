@@ -51,7 +51,11 @@ public class FragmentGarantias extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View rootView = inflater.inflate(R.layout.fragment_garantias, container, false);
+        listViewGarantias=(ListView)rootView.findViewById(R.id.listViewGarantias);
+        adapter=new ListViewAdapter();
+        listViewGarantias.setAdapter(null);
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fabGarantias);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,14 +65,15 @@ public class FragmentGarantias extends Fragment {
             }
         });
 
-        listViewGarantias=(ListView)rootView.findViewById(R.id.listViewGarantias);
-        adapter=new ListViewAdapter();
+
+
         listViewGarantias.setAdapter(adapter);
 
 
         produtosRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                produtos.clear();
                 for (DataSnapshot currentUser : dataSnapshot.getChildren()){
                     if (currentUser.getKey().equals(String.valueOf(Profile.getCurrentProfile().getId()))){
                         for (DataSnapshot produto : currentUser.getChildren()){

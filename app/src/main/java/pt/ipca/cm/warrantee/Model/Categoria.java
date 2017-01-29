@@ -1,10 +1,5 @@
 package pt.ipca.cm.warrantee.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Rafael on 17/01/2017.

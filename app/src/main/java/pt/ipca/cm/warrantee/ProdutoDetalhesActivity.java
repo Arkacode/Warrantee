@@ -119,10 +119,12 @@ public class ProdutoDetalhesActivity extends AppCompatActivity  implements View.
             produto.setPreco(editTextPreco.getText().toString());*/
             data.putString("periodo",editTextPeriodoGarantia.getText().toString());
             data.putString("fornecedor",editTextFornecedor.getText().toString());
+            data.putString("localCompra",editTextDataCompra.getText().toString());
+            data.putString("dataCompra",editTextDataCompra.getText().toString());
             data.putString("preco",editTextPreco.getText().toString());
             //produtosRef.child(Profile.getCurrentProfile().getId()).child(uid).setValue(produto);
             Intent myIntent = new Intent(ProdutoDetalhesActivity.this, ProvaCompraActivity.class);
-            myIntent.putExtra("data",data);
+            myIntent.putExtras(data);
             ProdutoDetalhesActivity.this.startActivity(myIntent);
         }
     }

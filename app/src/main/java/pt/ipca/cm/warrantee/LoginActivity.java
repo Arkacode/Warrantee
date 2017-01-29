@@ -36,10 +36,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import io.realm.RealmResults;
-import io.realm.exceptions.RealmMigrationNeededException;
+
 import pt.ipca.cm.warrantee.Model.Utilizador;
 
 public class LoginActivity extends AppCompatActivity {
