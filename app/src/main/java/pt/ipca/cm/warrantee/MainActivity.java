@@ -37,7 +37,6 @@ import pt.ipca.cm.warrantee.Model.Utilizador;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static List<Categoria> categorias = new ArrayList<>();
-    public static List<Produto> produtos = new ArrayList<>();
     String uid = Profile.getCurrentProfile().getId();
     Categoria categoria;
     Moeda moeda;
@@ -80,12 +79,45 @@ public class MainActivity extends AppCompatActivity
                 utilizadorC = new Utilizador();
                 utilizadorC.setNome(nome);
                 utilizadorC.setEmail(email);
+                utilizadorC.setNumTel("");
+                utilizadorC.setPais("");
+                utilizadorC.setCodPostal("");
                 utilizadoresRef.child(Profile.getCurrentProfile().getId()).setValue(utilizadorC);
             } else {
 
             }
         }
         iniciarDb();
+
+
+
+       /* utilizadoresRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot currentUser : dataSnapshot.getChildren()){
+                    if (currentUser.getKey().equals(String.valueOf(Profile.getCurrentProfile().getId()))){
+                        for (DataSnapshot utilizador : currentUser.getChildren()){
+                            Utilizador o = utilizador.getValue(Utilizador.class);
+
+                            int isDiff = 0;
+                            for (int i = 0; i < utilizadorArray.size(); i++){
+                                if (o != utilizadorArray.get(i)){
+                                    isDiff++;
+                                }
+                            }
+                            if (isDiff == utilizadorArray.size()){
+                                utilizadorArray.add(o);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
 
         categoriasRef.addValueEventListener(new ValueEventListener() {
             @Override

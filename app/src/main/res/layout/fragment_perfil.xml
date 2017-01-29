@@ -33,8 +33,15 @@
             android:text="Primeiro Ultimo Nome"
             android:id="@+id/textViewNomeCompleto"
             android:layout_weight="8"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Primeiro Ultimo Nome"
+            android:id="@+id/textViewEmail"
+            android:layout_weight="8"/>
     </LinearLayout>
     <View
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
@@ -132,15 +139,6 @@
         android:layout_below="@id/textHolder1">
 
 
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:inputType="textPersonName"
-            android:id="@+id/editTextCidade"
-            android:hint="Cidade"
-            android:layout_alignParentStart="true"
-            android:layout_weight="10"/>
-
     </LinearLayout>
 
     <LinearLayout
@@ -171,12 +169,12 @@
         android:background="@android:color/darker_gray"/>
 
     <Button
-        android:id="@+id/buttonMudarPass"
+        android:id="@+id/buttonConfirmar"
         android:onClick="onClick"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="10sp"
-        android:text="Mudar Palavra-Passe"
+        android:text="Confirmar"
         android:background="@color/GreenMain"
         android:textColor="@color/cardview_light_background" />
 
