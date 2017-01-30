@@ -30,10 +30,15 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             FragmentInformacaoGarantia tab1 = new FragmentInformacaoGarantia();
             return tab1;
         }
-        else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
+        if(position == 1) // if the position is 0 we are returning the First tab
         {
             FragmentInformacaoDetalhes tab2 = new FragmentInformacaoDetalhes();
             return tab2;
+        }
+        else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
+        {
+            FragmentEditarGarantia tab3 = new FragmentEditarGarantia();
+            return tab3;
         }
 
 

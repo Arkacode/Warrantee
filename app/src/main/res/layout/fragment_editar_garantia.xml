@@ -1,0 +1,277 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="pt.ipca.cm.warrantee.FragmentEditarGarantia">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cod. barras"
+        android:textColor="@color/GreenMain"
+        android:textSize="24sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textHolder1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="10"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:inputType="number"
+            android:id="@+id/editTextCodigoBarrasEditar"
+            android:hint="Introduza ou digitalize"
+            android:layout_alignParentStart="true"
+            android:layout_weight="7.5"/>
+
+        <Button
+            android:id="@+id/buttonScanBarrasEditar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/ic_scan"
+            android:textSize="10sp"
+            android:text="Scan"
+            android:layout_weight="2.5"
+            android:background="@color/GreenMain"
+            android:textColor="@color/cardview_light_background" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Marca do produto"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/GreenMain"
+        android:textSize="24sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textHolder2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="10"
+        android:orientation="horizontal"
+        android:layout_below="@id/textHolder1">
+
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:inputType="textPersonName"
+            android:id="@+id/editTextMarcaEditar"
+            android:hint="Introduza a marca"
+            android:layout_alignParentStart="true"
+            android:layout_weight="10"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nome Produto"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/GreenMain"
+        android:textSize="24sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textHolderNomeProduto"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="10"
+        android:orientation="horizontal"
+        android:layout_below="@id/textHolder1">
+
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:inputType="textPersonName"
+            android:id="@+id/editTextNomeProdutoEditar"
+            android:hint="Introduza o nome do produto"
+            android:layout_alignParentStart="true"
+            android:layout_weight="10"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cod. Serie"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/GreenMain"
+        android:textSize="24sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textHolderNumSerie"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="10"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:inputType="number"
+            android:id="@+id/editTextCodSerieEditar"
+            android:hint="Introduza ou digitalize"
+            android:layout_alignParentStart="true"
+            android:layout_weight="7.5"/>
+
+        <Button
+            android:id="@+id/buttonScanSerieEditar"
+            android:onClick="onClick"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/ic_scan"
+            android:textSize="10sp"
+            android:text="Scan"
+            android:layout_weight="2.5"
+            android:background="@color/GreenMain"
+            android:textColor="@color/cardview_light_background" />
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Período Garantia"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/GreenMain"
+        android:textSize="24sp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:id="@+id/editTextPeriodoGarantiaEditar"
+        android:hint="1 ano (12meses)"
+
+        android:layout_alignParentStart="true"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fornecedor"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/GreenMain"
+        android:textSize="24sp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:id="@+id/editTextFornecedorEditar"
+        android:hint="(Ex: Apple)"
+        android:layout_alignParentStart="true"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Local de compra"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/GreenMain"
+        android:textSize="24sp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:id="@+id/editTextLocalCompraEditar"
+        android:hint="(Ex: Apple Loja do Porto)"
+        android:layout_alignParentStart="true"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Data de compra"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/GreenMain"
+        android:textSize="24sp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:id="@+id/editTextDataCompraEditar"
+        android:focusable="false"
+        android:hint="Selecionar data"
+        android:layout_alignParentStart="true"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textHolderMoedaPreco"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="10"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="match_parent"
+            android:text="Preço"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/GreenMain"
+            android:textSize="24sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textHolderNumSerieEditar"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="10"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:inputType="numberDecimal"
+            android:id="@+id/editTextPrecoEditar"
+            android:hint=""
+            android:layout_weight="10"
+            android:layout_alignParentStart="true" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            android:id="@+id/buttonConfimarDetalhes"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Confirmar"
+            android:background="@color/GreenMain"
+            android:textColor="@color/cardview_light_background"
+            android:layout_alignParentBottom="true"
+            />
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+</LinearLayout></ScrollView>
