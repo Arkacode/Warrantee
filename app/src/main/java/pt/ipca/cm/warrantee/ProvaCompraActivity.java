@@ -162,11 +162,9 @@ public class ProvaCompraActivity extends AppCompatActivity implements View.OnCli
 
         // Determine how much to scale down the image
         int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
-
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         imageView.setImageBitmap(bitmap);
     }
@@ -217,6 +215,7 @@ public class ProvaCompraActivity extends AppCompatActivity implements View.OnCli
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                    // progressDialog.dismiss();
                     produto = new Produto();
+
                     produto.setCodigoBarras(codBarras);
                     produto.setNome(nome);
                     produto.setSerialNumber(codSerie);

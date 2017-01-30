@@ -15,33 +15,15 @@ public class InformacaoGarantiaActivity extends AppCompatActivity {
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
-    CharSequence Titles[]={"Garantia","Detalhes"};
-    int Numboftabs =2;
-    String nome;
-    String codigoBarras;
-    String marca;
-    String serialNumber;
-    String periodo;
-    String fornecedor;
-    String localCompra;
-    String dataCompra;
-    String preco;
+    CharSequence Titles[]={"Garantia","Detalhes","Editar"};
+    int Numboftabs =3;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informacao_garantia);
-        Intent dataProduto = getIntent();
-        /*nome = dataProduto.getStringExtra("nome");
-        codigoBarras = dataProduto.getStringExtra("codigoBarras");
-        marca = dataProduto.getStringExtra("marca");
-        serialNumber = dataProduto.getStringExtra("serialNumber");
-        periodo = dataProduto.getStringExtra("periodo");
-        fornecedor = dataProduto.getStringExtra("fornecedor");
-        localCompra = dataProduto.getStringExtra("localCompra");
-        dataCompra = dataProduto.getStringExtra("dataCompra");
-        preco = dataProduto.getStringExtra("preco");*/
+
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
 

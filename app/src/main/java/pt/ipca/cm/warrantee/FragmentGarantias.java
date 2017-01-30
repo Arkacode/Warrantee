@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -176,10 +177,6 @@ public class FragmentGarantias extends Fragment {
             return convertView;
         }
 
-        private void CalcularDiasRestantes(){
-
-        }
-
 
 
         @Override
@@ -194,6 +191,7 @@ public class FragmentGarantias extends Fragment {
             dataProduto.putExtra("localCompra", produtos.get(position).getLocalCompra());
             dataProduto.putExtra("dataCompra", produtos.get(position).getDataCompra());
             dataProduto.putExtra("preco", produtos.get(position).getPreco());
+            dataProduto.putExtra("marca", produtos.get(position).getMarca());
             dataProduto.putExtra("imagem", produtos.get(position).getImagem());
             startActivity(dataProduto);
      }
