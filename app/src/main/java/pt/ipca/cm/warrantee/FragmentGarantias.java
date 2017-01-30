@@ -2,14 +2,17 @@ package pt.ipca.cm.warrantee;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -57,6 +60,7 @@ public class FragmentGarantias extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_garantias, container, false);
         listViewGarantias=(ListView)rootView.findViewById(R.id.listViewGarantias);
+        listViewGarantias.setItemsCanFocus(false);
         adapter=new ListViewAdapter();
         listViewGarantias.setAdapter(null);
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fabGarantias);
@@ -71,7 +75,6 @@ public class FragmentGarantias extends Fragment {
 
 
         listViewGarantias.setAdapter(adapter);
-
 
         produtosRef.addValueEventListener(new ValueEventListener() {
             @Override

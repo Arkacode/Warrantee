@@ -4,7 +4,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_delete">Eliminar garantia</string>
     <string name="title_activity_login">Login</string>
 
     <string name="facebook_app_id">1212434642126034</string>
